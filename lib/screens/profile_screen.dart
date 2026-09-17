@@ -4,6 +4,8 @@ import 'support_screen.dart';
 import 'wishlist_screen.dart';
 import 'cart_screen.dart';
 import 'search_screen.dart';
+import 'coupons_rewards_screen.dart';
+import 'supplier_dashboard_screen.dart';
 import '../models/product.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -414,96 +416,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
   }
 
-  // Become a Supplier Sheet
-  void _showSupplierSheet() {
-    showModalBottomSheet(
-      context: context,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
-      ),
-      builder: (context) {
-        return Padding(
-          padding: const EdgeInsets.all(24),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Container(
-                padding: const EdgeInsets.all(16),
-                decoration: const BoxDecoration(
-                  color: Color(0xFFFFEDD5),
-                  shape: BoxShape.circle,
-                ),
-                child: const Icon(Icons.work_outline, size: 44, color: Color(0xFFF97316)),
-              ),
-              const SizedBox(height: 16),
-              const Text(
-                'Sell Your Products on EmergentStore 🚀',
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-              ),
-              const SizedBox(height: 8),
-              const Text(
-                'Grow your business with 0% Commission fee and reach over 70 Lakh active online shoppers across India.',
-                textAlign: TextAlign.center,
-                style: TextStyle(color: Colors.grey, fontSize: 13),
-              ),
-              const SizedBox(height: 20),
-              const Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  Column(
-                    children: [
-                      Icon(Icons.percent, color: Color(0xFFF97316)),
-                      SizedBox(height: 4),
-                      Text('0% Commission',
-                          style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold)),
-                    ],
-                  ),
-                  Column(
-                    children: [
-                      Icon(Icons.people_alt_outlined, color: Color(0xFFF97316)),
-                      SizedBox(height: 4),
-                      Text('7 Crore+ Buyers',
-                          style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold)),
-                    ],
-                  ),
-                  Column(
-                    children: [
-                      Icon(Icons.flash_on_outlined, color: Color(0xFFF97316)),
-                      SizedBox(height: 4),
-                      Text('7 Day Payouts',
-                          style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold)),
-                    ],
-                  ),
-                ],
-              ),
-              const SizedBox(height: 24),
-              SizedBox(
-                width: double.infinity,
-                height: 48,
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFFF97316),
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                  ),
-                  onPressed: () {
-                    Navigator.pop(context);
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                          content: Text('Redirecting to Supplier Registration Portal...')),
-                    );
-                  },
-                  child: const Text(
-                    'Start Selling Now',
-                    style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-                  ),
-                ),
-              ),
-            ],
-          ),
-        );
-      },
-    );
-  }
+
 
   // Settings Sheet with Dark Mode Switch
   void _showSettingsSheet() {
@@ -1272,10 +1185,30 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ),
             Divider(height: 1, color: isDark ? const Color(0xFF334155) : const Color(0xFFE2E8F0)),
             _buildMenuItem(
+              icon: const Icon(Icons.confirmation_num_outlined, color: Colors.purple, size: 24),
+              title: 'Coupons & Rewards Club',
+              badgeText: 'Earn Coins',
+              badgeBgColor: const Color(0xFFFEF3C7),
+              badgeTextColor: const Color(0xFFD97706),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const CouponsRewardsScreen()),
+                );
+              },
+              theme: theme,
+            ),
+            Divider(height: 1, color: isDark ? const Color(0xFF334155) : const Color(0xFFE2E8F0)),
+            _buildMenuItem(
               icon: const Icon(Icons.work_outline_rounded, color: Color(0xFFF97316), size: 24),
               title: 'Become a Supplier',
-              badgeText: 'New',
-              onTap: _showSupplierSheet,
+              badgeText: 'Seller Hub',
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const SupplierDashboardScreen()),
+                );
+              },
               theme: theme,
             ),
             Divider(height: 1, color: isDark ? const Color(0xFF334155) : const Color(0xFFE2E8F0)),

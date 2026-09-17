@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../models/order.dart';
+import 'track_order_screen.dart';
 
 class OrdersScreen extends StatelessWidget {
   const OrdersScreen({super.key});
@@ -124,12 +125,18 @@ class OrdersScreen extends StatelessWidget {
                       ),
                       OutlinedButton.icon(
                         onPressed: () {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(content: Text('Tracking ${order.trackingNumber} refreshed!')),
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => TrackOrderScreen(
+                                orderId: order.orderId,
+                                trackingNumber: order.trackingNumber,
+                              ),
+                            ),
                           );
                         },
                         icon: const Icon(Icons.location_searching_rounded, size: 16),
-                        label: const Text('Track'),
+                        label: const Text('Track Order'),
                         style: OutlinedButton.styleFrom(
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10),

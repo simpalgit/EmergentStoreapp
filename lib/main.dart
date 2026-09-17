@@ -10,6 +10,7 @@ import 'screens/search_screen.dart';
 import 'screens/category_screen.dart';
 import 'screens/orders_screen.dart';
 import 'screens/video_finds_screen.dart';
+import 'screens/live_shopping_screen.dart';
 import 'widgets/banner_carousel.dart';
 
 void main() {
@@ -456,6 +457,85 @@ class _ShopCatalogScreenState extends State<ShopCatalogScreen> {
           ),
 
           const SizedBox(height: 18),
+
+          // Live Shopping Show Highlight Banner
+          InkWell(
+            borderRadius: BorderRadius.circular(16),
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const LiveShoppingScreen()),
+              );
+            },
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+              decoration: BoxDecoration(
+                gradient: const LinearGradient(
+                  colors: [Color(0xFF831843), Color(0xFFBE185D)],
+                ),
+                borderRadius: BorderRadius.circular(16),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.pink.withValues(alpha: 0.25),
+                    blurRadius: 8,
+                    offset: const Offset(0, 4),
+                  ),
+                ],
+              ),
+              child: Row(
+                children: [
+                  Container(
+                    padding: const EdgeInsets.all(8),
+                    decoration: BoxDecoration(
+                      color: Colors.white.withValues(alpha: 0.2),
+                      shape: BoxShape.circle,
+                    ),
+                    child: const Icon(Icons.live_tv_rounded, color: Colors.amber, size: 24),
+                  ),
+                  const SizedBox(width: 12),
+                  const Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          children: [
+                            Text(
+                              'LIVE SHOW',
+                              style: TextStyle(
+                                color: Colors.amber,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 11,
+                                letterSpacing: 0.5,
+                              ),
+                            ),
+                            SizedBox(width: 6),
+                            Icon(Icons.circle, color: Colors.greenAccent, size: 8),
+                            SizedBox(width: 4),
+                            Text(
+                              '3.4k watching',
+                              style: TextStyle(color: Colors.white70, fontSize: 10),
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: 2),
+                        Text(
+                          'Festival Saree & Jewellery Live Showcase 💖',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 13,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  const Icon(Icons.arrow_forward_ios_rounded, color: Colors.white, size: 16),
+                ],
+              ),
+            ),
+          ),
+
+          const SizedBox(height: 16),
 
           // Promo Sale Banner Carousel
           const BannerCarousel(),

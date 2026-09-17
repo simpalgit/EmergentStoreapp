@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../models/product.dart';
+import 'reviews_ratings_screen.dart';
 
 class ProductDetailScreen extends StatefulWidget {
   final Product product;
@@ -143,42 +144,61 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                 const SizedBox(height: 12),
 
                 // Rating & Reviews Row
-                Row(
-                  children: [
-                    const Icon(Icons.star_rounded, color: Colors.amber, size: 20),
-                    const SizedBox(width: 4),
-                    Text(
-                      '${p.rating}',
-                      style: const TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                    const SizedBox(width: 6),
-                    Text(
-                      '(${p.reviewsCount} reviews)',
-                      style: TextStyle(color: theme.hintColor, fontSize: 13),
-                    ),
-                    const Spacer(),
-                    Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                      decoration: BoxDecoration(
-                        color: Colors.green.withValues(alpha: 0.12),
-                        borderRadius: BorderRadius.circular(8),
+                InkWell(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => ReviewsRatingsScreen(productName: p.name),
                       ),
-                      child: const Row(
-                        children: [
-                          Icon(Icons.check_circle_outline, color: Colors.green, size: 14),
-                          SizedBox(width: 4),
-                          Text(
-                            'In Stock',
-                            style: TextStyle(
-                              fontSize: 12,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.green,
-                            ),
+                    );
+                  },
+                  borderRadius: BorderRadius.circular(10),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 4),
+                    child: Row(
+                      children: [
+                        const Icon(Icons.star_rounded, color: Colors.amber, size: 20),
+                        const SizedBox(width: 4),
+                        Text(
+                          '${p.rating}',
+                          style: const TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                        const SizedBox(width: 6),
+                        Text(
+                          '(${p.reviewsCount} reviews)',
+                          style: TextStyle(
+                            color: theme.colorScheme.primary,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 13,
+                            decoration: TextDecoration.underline,
                           ),
-                        ],
-                      ),
+                        ),
+                        const Spacer(),
+                        Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                          decoration: BoxDecoration(
+                            color: Colors.green.withValues(alpha: 0.12),
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: const Row(
+                            children: [
+                              Icon(Icons.check_circle_outline, color: Colors.green, size: 14),
+                              SizedBox(width: 4),
+                              Text(
+                                'In Stock',
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.green,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
                     ),
-                  ],
+                  ),
                 ),
 
                 const SizedBox(height: 20),
@@ -194,16 +214,16 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                   const SizedBox(height: 10),
                   Wrap(
                     spacing: 10,
-                    children: p.sizes.map((size) {
-                      final isSelected = _selectedSize == size;
-                      return ChoiceChip(
-                        label: Text(size),
-                        selected: isSelected,
-                        onSelected: (selected) {
-                          if (selected) setState(() => _selectedSize = size);
-                        },
-                      );
-                    }).toList(),
+                    children: [
+                      for (final size in p.sizes)
+                        ChoiceChip(
+                          label: Text(size),
+                          selected: _selectedSize == size,
+                          onSelected: (selected) {
+                            if (selected) setState(() => _selectedSize = size);
+                          },
+                        ),
+                    ],
                   ),
                   const SizedBox(height: 20),
                 ],
@@ -215,30 +235,30 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                 ),
                 const SizedBox(height: 10),
                 Row(
-                  children: p.colors.map((color) {
-                    final isSelected = _selectedColor == color;
-                    return GestureDetector(
-                      onTap: () => setState(() => _selectedColor = color),
-                      child: Container(
-                        margin: const EdgeInsets.only(right: 12),
-                        padding: const EdgeInsets.all(3),
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          border: Border.all(
-                            color: isSelected ? theme.colorScheme.primary : Colors.transparent,
-                            width: 2,
+                  children: [
+                    for (final color in p.colors)
+                      GestureDetector(
+                        onTap: () => setState(() => _selectedColor = color),
+                        child: Container(
+                          margin: const EdgeInsets.only(right: 12),
+                          padding: const EdgeInsets.all(3),
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            border: Border.all(
+                              color: _selectedColor == color ? theme.colorScheme.primary : Colors.transparent,
+                              width: 2,
+                            ),
+                          ),
+                          child: CircleAvatar(
+                            radius: 14,
+                            backgroundColor: color,
+                            child: _selectedColor == color
+                                ? const Icon(Icons.check, size: 16, color: Colors.white)
+                                : null,
                           ),
                         ),
-                        child: CircleAvatar(
-                          radius: 14,
-                          backgroundColor: color,
-                          child: isSelected
-                              ? const Icon(Icons.check, size: 16, color: Colors.white)
-                              : null,
-                        ),
                       ),
-                    );
-                  }).toList(),
+                  ],
                 ),
 
                 const SizedBox(height: 20),
