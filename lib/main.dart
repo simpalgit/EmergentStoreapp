@@ -16,6 +16,7 @@ import 'screens/coupons_rewards_screen.dart';
 import 'screens/supplier_dashboard_screen.dart';
 import 'screens/handcrafted_studio_screen.dart';
 import 'screens/saved_addresses_screen.dart';
+import 'screens/ai_chatbot_screen.dart';
 import 'widgets/banner_carousel.dart';
 
 void main() {
@@ -266,6 +267,19 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
       body: IndexedStack(
         index: _selectedIndex,
         children: screens,
+      ),
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => AIChatbotScreen(onProductTap: _navigateToDetail),
+            ),
+          );
+        },
+        icon: const Icon(Icons.smart_toy_rounded, color: Colors.white),
+        label: const Text('Python AI', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+        backgroundColor: Theme.of(context).colorScheme.primary,
       ),
       bottomNavigationBar: Container(
         decoration: BoxDecoration(
