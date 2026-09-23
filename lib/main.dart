@@ -12,6 +12,10 @@ import 'screens/orders_screen.dart';
 import 'screens/video_finds_screen.dart';
 import 'screens/live_shopping_screen.dart';
 import 'screens/flash_sale_screen.dart';
+import 'screens/coupons_rewards_screen.dart';
+import 'screens/supplier_dashboard_screen.dart';
+import 'screens/handcrafted_studio_screen.dart';
+import 'screens/saved_addresses_screen.dart';
 import 'widgets/banner_carousel.dart';
 
 void main() {
@@ -359,6 +363,7 @@ class _ShopCatalogScreenState extends State<ShopCatalogScreen> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
 
     final filteredProducts = sampleProducts.where((p) {
       return _selectedCategory == 'All' || p.category == _selectedCategory;
@@ -366,37 +371,84 @@ class _ShopCatalogScreenState extends State<ShopCatalogScreen> {
 
     return SafeArea(
       child: ListView(
-        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+        padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 12),
         children: [
-          // Top Bar Greeting & Brand
+          // 1. TOP LOCATION & BRAND BAR
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    'Explore Collections 🛍️',
-                    style: theme.textTheme.bodyMedium?.copyWith(
-                      color: theme.hintColor,
+                  InkWell(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => const SavedAddressesScreen()),
+                      );
+                    },
+                    borderRadius: BorderRadius.circular(8),
+                    child: Row(
+                      children: [
+                        const Icon(Icons.location_on_rounded, color: Colors.redAccent, size: 16),
+                        const SizedBox(width: 4),
+                        const Text(
+                          'Deliver to Simpal • 110001',
+                          style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+                        ),
+                        Icon(Icons.keyboard_arrow_down_rounded, size: 18, color: theme.hintColor),
+                      ],
                     ),
                   ),
                   const SizedBox(height: 2),
                   Text(
-                    'EmergentStore',
+                    'EmergentStore 🛍️',
                     style: theme.textTheme.headlineSmall?.copyWith(
-                      fontWeight: FontWeight.bold,
+                      fontWeight: FontWeight.w900,
+                      color: theme.colorScheme.primary,
                     ),
                   ),
                 ],
               ),
               Row(
                 children: [
+                  // Coins Balance Widget
+                  InkWell(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => const CouponsRewardsScreen()),
+                      );
+                    },
+                    borderRadius: BorderRadius.circular(16),
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                      decoration: BoxDecoration(
+                        color: Colors.amber.shade100,
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                      child: const Row(
+                        children: [
+                          Icon(Icons.monetization_on_rounded, color: Colors.amber, size: 16),
+                          SizedBox(width: 4),
+                          Text(
+                            '1,450',
+                            style: TextStyle(
+                              color: Colors.black87,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 12,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 6),
                   IconButton(
                     icon: Badge(
                       isLabelVisible: widget.favoriteCount > 0,
                       label: Text('${widget.favoriteCount}'),
-                      child: const Icon(Icons.favorite_border),
+                      child: const Icon(Icons.favorite_border_rounded),
                     ),
                     onPressed: widget.onOpenWishlist,
                   ),
@@ -417,9 +469,9 @@ class _ShopCatalogScreenState extends State<ShopCatalogScreen> {
                       );
                     },
                     child: CircleAvatar(
-                      radius: 20,
+                      radius: 18,
                       backgroundColor: theme.colorScheme.primary.withValues(alpha: 0.15),
-                      child: Icon(Icons.notifications_none_rounded, color: theme.colorScheme.primary, size: 20),
+                      child: Icon(Icons.notifications_none_rounded, color: theme.colorScheme.primary, size: 18),
                     ),
                   ),
                 ],
@@ -427,176 +479,45 @@ class _ShopCatalogScreenState extends State<ShopCatalogScreen> {
             ],
           ),
 
-          const SizedBox(height: 18),
+          const SizedBox(height: 16),
 
-          // Clean Search Bar Trigger
+          // 2. SEARCH BAR TRIGGER
           InkWell(
             borderRadius: BorderRadius.circular(16),
             onTap: widget.onSearchTap,
             child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 13),
               decoration: BoxDecoration(
-                color: theme.cardTheme.color ?? theme.colorScheme.surface,
+                color: isDark ? const Color(0xFF1E293B) : Colors.white,
                 borderRadius: BorderRadius.circular(16),
                 border: Border.all(
-                  color: theme.dividerColor.withValues(alpha: 0.2),
+                  color: isDark ? const Color(0xFF334155) : const Color(0xFFE2E8F0),
                 ),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withValues(alpha: 0.04),
+                    blurRadius: 6,
+                    offset: const Offset(0, 2),
+                  ),
+                ],
               ),
               child: Row(
                 children: [
-                  Icon(Icons.search, color: theme.hintColor),
+                  Icon(Icons.search_rounded, color: theme.colorScheme.primary),
                   const SizedBox(width: 12),
                   Text(
-                    'Search electronics, shoes, fashion...',
+                    'Search sarees, shoes, electronics...',
                     style: TextStyle(color: theme.hintColor, fontSize: 14),
                   ),
                   const Spacer(),
-                  Icon(Icons.tune_rounded, size: 20, color: theme.hintColor),
-                ],
-              ),
-            ),
-          ),
-
-          const SizedBox(height: 18),
-
-          // Live Shopping Show Highlight Banner
-          InkWell(
-            borderRadius: BorderRadius.circular(16),
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const LiveShoppingScreen()),
-              );
-            },
-            child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-              decoration: BoxDecoration(
-                gradient: const LinearGradient(
-                  colors: [Color(0xFF831843), Color(0xFFBE185D)],
-                ),
-                borderRadius: BorderRadius.circular(16),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.pink.withValues(alpha: 0.25),
-                    blurRadius: 8,
-                    offset: const Offset(0, 4),
-                  ),
-                ],
-              ),
-              child: Row(
-                children: [
                   Container(
-                    padding: const EdgeInsets.all(8),
+                    padding: const EdgeInsets.all(6),
                     decoration: BoxDecoration(
-                      color: Colors.white.withValues(alpha: 0.2),
-                      shape: BoxShape.circle,
+                      color: theme.colorScheme.primary.withValues(alpha: 0.1),
+                      borderRadius: BorderRadius.circular(8),
                     ),
-                    child: const Icon(Icons.live_tv_rounded, color: Colors.amber, size: 24),
+                    child: Icon(Icons.tune_rounded, size: 18, color: theme.colorScheme.primary),
                   ),
-                  const SizedBox(width: 12),
-                  const Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          children: [
-                            Text(
-                              'LIVE SHOW',
-                              style: TextStyle(
-                                color: Colors.amber,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 11,
-                                letterSpacing: 0.5,
-                              ),
-                            ),
-                            SizedBox(width: 6),
-                            Icon(Icons.circle, color: Colors.greenAccent, size: 8),
-                            SizedBox(width: 4),
-                            Text(
-                              '3.4k watching',
-                              style: TextStyle(color: Colors.white70, fontSize: 10),
-                            ),
-                          ],
-                        ),
-                        SizedBox(height: 2),
-                        Text(
-                          'Festival Saree & Jewellery Live Showcase 💖',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 13,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  const Icon(Icons.arrow_forward_ios_rounded, color: Colors.white, size: 16),
-                ],
-              ),
-            ),
-          ),
-
-          const SizedBox(height: 12),
-
-          // ⚡ Flash Sale Banner
-          InkWell(
-            borderRadius: BorderRadius.circular(16),
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => FlashSaleScreen(
-                    onProductTap: widget.onProductTap,
-                    onQuickAddToCart: widget.onQuickAddToCart,
-                  ),
-                ),
-              );
-            },
-            child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-              decoration: BoxDecoration(
-                gradient: const LinearGradient(
-                  colors: [Color(0xFFB91C1C), Color(0xFFC2410C)],
-                ),
-                borderRadius: BorderRadius.circular(16),
-              ),
-              child: Row(
-                children: [
-                  Container(
-                    padding: const EdgeInsets.all(8),
-                    decoration: BoxDecoration(
-                      color: Colors.white.withValues(alpha: 0.2),
-                      shape: BoxShape.circle,
-                    ),
-                    child: const Icon(Icons.bolt_rounded, color: Colors.amber, size: 24),
-                  ),
-                  const SizedBox(width: 12),
-                  const Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'FLASH SALE ⚡ UP TO 70% OFF',
-                          style: TextStyle(
-                            color: Colors.amber,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 11,
-                            letterSpacing: 0.5,
-                          ),
-                        ),
-                        SizedBox(height: 2),
-                        Text(
-                          'Limited Time Deals ending in 2 Hours!',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 13,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  const Icon(Icons.arrow_forward_ios_rounded, color: Colors.white, size: 16),
                 ],
               ),
             ),
@@ -604,12 +525,186 @@ class _ShopCatalogScreenState extends State<ShopCatalogScreen> {
 
           const SizedBox(height: 16),
 
-          // Promo Sale Banner Carousel
+          // 3. QUICK SHORTCUTS CIRCULAR GRID
+          SizedBox(
+            height: 90,
+            child: ListView(
+              scrollDirection: Axis.horizontal,
+              children: [
+                _HomeShortcutTile(
+                  icon: Icons.bolt_rounded,
+                  label: 'Flash Sale',
+                  badge: '70% OFF',
+                  color: Colors.red,
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => FlashSaleScreen(
+                          onProductTap: widget.onProductTap,
+                          onQuickAddToCart: widget.onQuickAddToCart,
+                        ),
+                      ),
+                    );
+                  },
+                ),
+                const SizedBox(width: 12),
+                _HomeShortcutTile(
+                  icon: Icons.live_tv_rounded,
+                  label: 'Live Show',
+                  badge: 'LIVE',
+                  color: Colors.pink,
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => const LiveShoppingScreen()),
+                    );
+                  },
+                ),
+                const SizedBox(width: 12),
+                _HomeShortcutTile(
+                  icon: Icons.confirmation_num_rounded,
+                  label: 'Coupons',
+                  badge: 'Free Coins',
+                  color: Colors.purple,
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => const CouponsRewardsScreen()),
+                    );
+                  },
+                ),
+                const SizedBox(width: 12),
+                _HomeShortcutTile(
+                  icon: Icons.brush_rounded,
+                  label: 'Artisans',
+                  badge: 'Handcrafted',
+                  color: Colors.teal,
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => HandcraftedStudioScreen(
+                          onProductTap: widget.onProductTap,
+                          onQuickAddToCart: widget.onQuickAddToCart,
+                        ),
+                      ),
+                    );
+                  },
+                ),
+                const SizedBox(width: 12),
+                _HomeShortcutTile(
+                  icon: Icons.storefront_rounded,
+                  label: 'Seller Hub',
+                  badge: 'Supplier',
+                  color: Colors.amber.shade800,
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => const SupplierDashboardScreen()),
+                    );
+                  },
+                ),
+              ],
+            ),
+          ),
+
+          const SizedBox(height: 16),
+
+          // 4. PROMO SALE BANNER CAROUSEL
           const BannerCarousel(),
 
           const SizedBox(height: 20),
 
-          // Category Chips Horizontal Scroll
+          // 5. TRENDING DEALS / RECOMMENDATIONS HORIZONTAL CAROUSEL
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                'Trending Deals Today 🔥',
+                style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
+              ),
+              InkWell(
+                onTap: widget.onSearchTap,
+                child: Text(
+                  'View All',
+                  style: TextStyle(color: theme.colorScheme.primary, fontWeight: FontWeight.bold, fontSize: 13),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 12),
+
+          SizedBox(
+            height: 210,
+            child: ListView.builder(
+              scrollDirection: Axis.horizontal,
+              itemCount: sampleProducts.length,
+              itemBuilder: (context, index) {
+                final p = sampleProducts[index];
+                return Container(
+                  width: 150,
+                  margin: const EdgeInsets.only(right: 12),
+                  child: Card(
+                    child: InkWell(
+                      onTap: () => widget.onProductTap(p),
+                      borderRadius: BorderRadius.circular(16),
+                      child: Padding(
+                        padding: const EdgeInsets.all(10),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Container(
+                              height: 90,
+                              width: double.infinity,
+                              decoration: BoxDecoration(
+                                color: p.badgeColor.withValues(alpha: 0.12),
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                              child: Center(child: Icon(p.icon, size: 40, color: p.badgeColor)),
+                            ),
+                            const SizedBox(height: 8),
+                            Text(
+                              p.name,
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
+                            ),
+                            const SizedBox(height: 4),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  '₹${p.price.toStringAsFixed(0)}',
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 13,
+                                    color: theme.colorScheme.primary,
+                                  ),
+                                ),
+                                Container(
+                                  padding: const EdgeInsets.all(4),
+                                  decoration: BoxDecoration(
+                                    color: theme.colorScheme.primary,
+                                    borderRadius: BorderRadius.circular(6),
+                                  ),
+                                  child: const Icon(Icons.add, color: Colors.white, size: 14),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                );
+              },
+            ),
+          ),
+
+          const SizedBox(height: 24),
+
+          // 6. CATEGORY CHIPS HORIZONTAL SCROLL
           SizedBox(
             height: 38,
             child: ListView.separated(
@@ -630,14 +725,14 @@ class _ShopCatalogScreenState extends State<ShopCatalogScreen> {
             ),
           ),
 
-          const SizedBox(height: 20),
+          const SizedBox(height: 18),
 
-          // Section Header
+          // 7. PRODUCT GRID SECTION HEADER
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                _selectedCategory == 'All' ? 'Featured Products' : '$_selectedCategory Collection',
+                _selectedCategory == 'All' ? 'Explore Products' : '$_selectedCategory Collection',
                 style: theme.textTheme.titleMedium?.copyWith(
                   fontWeight: FontWeight.bold,
                 ),
@@ -651,7 +746,7 @@ class _ShopCatalogScreenState extends State<ShopCatalogScreen> {
 
           const SizedBox(height: 12),
 
-          // Product Grid
+          // 8. PRODUCT GRID
           GridView.builder(
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
@@ -825,8 +920,121 @@ class _ShopCatalogScreenState extends State<ShopCatalogScreen> {
               );
             },
           ),
+
+          const SizedBox(height: 24),
+
+          // 9. TRUST & GUARANTEE PROMISE BADGES BAR
+          Container(
+            padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 12),
+            decoration: BoxDecoration(
+              color: isDark ? const Color(0xFF1E293B) : const Color(0xFFF1F5F9),
+              borderRadius: BorderRadius.circular(16),
+            ),
+            child: const Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                _TrustBadge(icon: Icons.local_shipping_outlined, title: 'Free Delivery'),
+                _TrustBadge(icon: Icons.published_with_changes_rounded, title: '7-Day Return'),
+                _TrustBadge(icon: Icons.shield_outlined, title: '100% Safe Pay'),
+                _TrustBadge(icon: Icons.flag_outlined, title: 'Made in India'),
+              ],
+            ),
+          ),
+          const SizedBox(height: 12),
         ],
       ),
     );
   }
 }
+
+class _HomeShortcutTile extends StatelessWidget {
+  final IconData icon;
+  final String label;
+  final String badge;
+  final Color color;
+  final VoidCallback onTap;
+
+  const _HomeShortcutTile({
+    required this.icon,
+    required this.label,
+    required this.badge,
+    required this.color,
+    required this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(14),
+      child: Column(
+        children: [
+          Stack(
+            clipBehavior: Clip.none,
+            children: [
+              Container(
+                width: 52,
+                height: 52,
+                decoration: BoxDecoration(
+                  color: color.withValues(alpha: 0.12),
+                  shape: BoxShape.circle,
+                  border: Border.all(color: color.withValues(alpha: 0.3)),
+                ),
+                child: Icon(icon, color: color, size: 26),
+              ),
+              Positioned(
+                top: -4,
+                right: -6,
+                child: Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 1),
+                  decoration: BoxDecoration(
+                    color: color,
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: Text(
+                    badge,
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 8,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 6),
+          Text(
+            label,
+            style: const TextStyle(
+              fontSize: 11,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _TrustBadge extends StatelessWidget {
+  final IconData icon;
+  final String title;
+
+  const _TrustBadge({required this.icon, required this.title});
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Icon(icon, size: 20, color: Theme.of(context).colorScheme.primary),
+        const SizedBox(height: 4),
+        Text(
+          title,
+          style: const TextStyle(fontSize: 10, fontWeight: FontWeight.bold),
+        ),
+      ],
+    );
+  }
+}
+
