@@ -377,40 +377,47 @@ class _ShopCatalogScreenState extends State<ShopCatalogScreen> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  InkWell(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => const SavedAddressesScreen()),
-                      );
-                    },
-                    borderRadius: BorderRadius.circular(8),
-                    child: Row(
-                      children: [
-                        const Icon(Icons.location_on_rounded, color: Colors.redAccent, size: 16),
-                        const SizedBox(width: 4),
-                        const Text(
-                          'Deliver to Simpal • 110001',
-                          style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
-                        ),
-                        Icon(Icons.keyboard_arrow_down_rounded, size: 18, color: theme.hintColor),
-                      ],
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    InkWell(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => const SavedAddressesScreen()),
+                        );
+                      },
+                      borderRadius: BorderRadius.circular(8),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          const Icon(Icons.location_on_rounded, color: Colors.redAccent, size: 15),
+                          const SizedBox(width: 4),
+                          Flexible(
+                            child: Text(
+                              'Deliver to Simpal • 110001',
+                              overflow: TextOverflow.ellipsis,
+                              style: const TextStyle(fontSize: 11, fontWeight: FontWeight.bold),
+                            ),
+                          ),
+                          Icon(Icons.keyboard_arrow_down_rounded, size: 16, color: theme.hintColor),
+                        ],
+                      ),
                     ),
-                  ),
-                  const SizedBox(height: 2),
-                  Text(
-                    'EmergentStore 🛍️',
-                    style: theme.textTheme.headlineSmall?.copyWith(
-                      fontWeight: FontWeight.w900,
-                      color: theme.colorScheme.primary,
+                    const SizedBox(height: 2),
+                    Text(
+                      'EmergentStore 🛍️',
+                      style: theme.textTheme.titleLarge?.copyWith(
+                        fontWeight: FontWeight.w900,
+                        color: theme.colorScheme.primary,
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
               Row(
+                mainAxisSize: MainAxisSize.min,
                 children: [
                   // Coins Balance Widget
                   InkWell(
@@ -422,44 +429,50 @@ class _ShopCatalogScreenState extends State<ShopCatalogScreen> {
                     },
                     borderRadius: BorderRadius.circular(16),
                     child: Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                       decoration: BoxDecoration(
                         color: Colors.amber.shade100,
-                        borderRadius: BorderRadius.circular(16),
+                        borderRadius: BorderRadius.circular(14),
                       ),
                       child: const Row(
                         children: [
-                          Icon(Icons.monetization_on_rounded, color: Colors.amber, size: 16),
+                          Icon(Icons.monetization_on_rounded, color: Colors.amber, size: 15),
                           SizedBox(width: 4),
                           Text(
                             '1,450',
                             style: TextStyle(
                               color: Colors.black87,
                               fontWeight: FontWeight.bold,
-                              fontSize: 12,
+                              fontSize: 11,
                             ),
                           ),
                         ],
                       ),
                     ),
                   ),
-                  const SizedBox(width: 6),
+                  const SizedBox(width: 4),
                   IconButton(
+                    padding: const EdgeInsets.all(8),
+                    constraints: const BoxConstraints(),
                     icon: Badge(
                       isLabelVisible: widget.favoriteCount > 0,
                       label: Text('${widget.favoriteCount}'),
-                      child: const Icon(Icons.favorite_border_rounded),
+                      child: const Icon(Icons.favorite_border_rounded, size: 22),
                     ),
                     onPressed: widget.onOpenWishlist,
                   ),
+                  const SizedBox(width: 4),
                   IconButton(
+                    padding: const EdgeInsets.all(8),
+                    constraints: const BoxConstraints(),
                     icon: Badge(
                       isLabelVisible: widget.cartCount > 0,
                       label: Text('${widget.cartCount}'),
-                      child: const Icon(Icons.shopping_bag_outlined),
+                      child: const Icon(Icons.shopping_bag_outlined, size: 22),
                     ),
                     onPressed: widget.onOpenCart,
                   ),
+                  const SizedBox(width: 4),
                   InkWell(
                     borderRadius: BorderRadius.circular(22),
                     onTap: () {
@@ -469,7 +482,7 @@ class _ShopCatalogScreenState extends State<ShopCatalogScreen> {
                       );
                     },
                     child: CircleAvatar(
-                      radius: 18,
+                      radius: 16,
                       backgroundColor: theme.colorScheme.primary.withValues(alpha: 0.15),
                       child: Icon(Icons.notifications_none_rounded, color: theme.colorScheme.primary, size: 18),
                     ),
