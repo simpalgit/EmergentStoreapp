@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'address_payment_screen.dart';
-import 'support_screen.dart';
 import 'wishlist_screen.dart';
 import 'cart_screen.dart';
 import 'search_screen.dart';
 import 'coupons_rewards_screen.dart';
 import 'supplier_dashboard_screen.dart';
+import 'saved_addresses_screen.dart';
+import 'wallet_screen.dart';
+import 'live_chat_support_screen.dart';
+import 'settings_security_screen.dart';
 import '../models/product.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -988,7 +991,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     onTap: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => const SupportScreen()),
+                        MaterialPageRoute(builder: (context) => const LiveChatSupportScreen()),
                       );
                     },
                     borderRadius: BorderRadius.circular(12),
@@ -1006,13 +1009,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           const Icon(
-                            Icons.phone_in_talk_outlined,
+                            Icons.support_agent_rounded,
                             color: Color(0xFF3B82F6),
                             size: 28,
                           ),
                           const SizedBox(height: 10),
                           Text(
-                            'Help Centre',
+                            '24/7 AI Support',
                             style: TextStyle(
                               fontSize: 15,
                               fontWeight: FontWeight.w600,
@@ -1066,8 +1069,20 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
             const SizedBox(height: 10),
 
-            // 4. SECTION 1: MY PAYMENTS
-            _buildSectionTitle('My Payments', theme),
+            // 4. SECTION 1: MY PAYMENTS & ADDRESSES
+            _buildSectionTitle('My Payments & Delivery', theme),
+            _buildMenuItem(
+              icon: const Icon(Icons.location_on_outlined, color: Color(0xFF3B82F6), size: 24),
+              title: 'Saved Delivery Addresses',
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const SavedAddressesScreen()),
+                );
+              },
+              theme: theme,
+            ),
+            Divider(height: 1, color: isDark ? const Color(0xFF334155) : const Color(0xFFE2E8F0)),
             _buildMenuItem(
               icon: Container(
                 padding: const EdgeInsets.all(4),
@@ -1164,7 +1179,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   ),
                 ),
               ),
-              title: 'EmergentStore Balance',
+              title: 'Emergent Wallet Balance',
               trailingWidget: Container(
                 padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 3),
                 decoration: BoxDecoration(
@@ -1172,7 +1187,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: const Text(
-                  '₹0',
+                  '₹1,250',
                   style: TextStyle(
                     fontSize: 13,
                     fontWeight: FontWeight.bold,
@@ -1180,7 +1195,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   ),
                 ),
               ),
-              onTap: _showBalanceSheet,
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const WalletScreen()),
+                );
+              },
               theme: theme,
             ),
             Divider(height: 1, color: isDark ? const Color(0xFF334155) : const Color(0xFFE2E8F0)),
@@ -1214,8 +1234,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
             Divider(height: 1, color: isDark ? const Color(0xFF334155) : const Color(0xFFE2E8F0)),
             _buildMenuItem(
               icon: const Icon(Icons.settings_outlined, color: Color(0xFF64748B), size: 24),
-              title: 'Settings',
-              onTap: _showSettingsSheet,
+              title: 'Settings & Security',
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => SettingsSecurityScreen(
+                      currentThemeMode: widget.currentThemeMode,
+                      onThemeChanged: widget.onThemeChanged,
+                    ),
+                  ),
+                );
+              },
               theme: theme,
             ),
             Divider(height: 1, color: isDark ? const Color(0xFF334155) : const Color(0xFFE2E8F0)),

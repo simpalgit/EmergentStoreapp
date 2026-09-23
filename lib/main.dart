@@ -11,6 +11,7 @@ import 'screens/category_screen.dart';
 import 'screens/orders_screen.dart';
 import 'screens/video_finds_screen.dart';
 import 'screens/live_shopping_screen.dart';
+import 'screens/flash_sale_screen.dart';
 import 'widgets/banner_carousel.dart';
 
 void main() {
@@ -520,6 +521,72 @@ class _ShopCatalogScreenState extends State<ShopCatalogScreen> {
                         SizedBox(height: 2),
                         Text(
                           'Festival Saree & Jewellery Live Showcase 💖',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 13,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  const Icon(Icons.arrow_forward_ios_rounded, color: Colors.white, size: 16),
+                ],
+              ),
+            ),
+          ),
+
+          const SizedBox(height: 12),
+
+          // ⚡ Flash Sale Banner
+          InkWell(
+            borderRadius: BorderRadius.circular(16),
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => FlashSaleScreen(
+                    onProductTap: widget.onProductTap,
+                    onQuickAddToCart: widget.onQuickAddToCart,
+                  ),
+                ),
+              );
+            },
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+              decoration: BoxDecoration(
+                gradient: const LinearGradient(
+                  colors: [Color(0xFFB91C1C), Color(0xFFC2410C)],
+                ),
+                borderRadius: BorderRadius.circular(16),
+              ),
+              child: Row(
+                children: [
+                  Container(
+                    padding: const EdgeInsets.all(8),
+                    decoration: BoxDecoration(
+                      color: Colors.white.withValues(alpha: 0.2),
+                      shape: BoxShape.circle,
+                    ),
+                    child: const Icon(Icons.bolt_rounded, color: Colors.amber, size: 24),
+                  ),
+                  const SizedBox(width: 12),
+                  const Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'FLASH SALE ⚡ UP TO 70% OFF',
+                          style: TextStyle(
+                            color: Colors.amber,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 11,
+                            letterSpacing: 0.5,
+                          ),
+                        ),
+                        SizedBox(height: 2),
+                        Text(
+                          'Limited Time Deals ending in 2 Hours!',
                           style: TextStyle(
                             color: Colors.white,
                             fontWeight: FontWeight.bold,
