@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../models/order.dart';
 import 'track_order_screen.dart';
+import 'return_request_screen.dart';
 
 class OrdersScreen extends StatelessWidget {
   const OrdersScreen({super.key});
@@ -123,25 +124,42 @@ class OrdersScreen extends StatelessWidget {
                           ),
                         ],
                       ),
-                      OutlinedButton.icon(
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => TrackOrderScreen(
-                                orderId: order.orderId,
-                                trackingNumber: order.trackingNumber,
-                              ),
-                            ),
-                          );
-                        },
-                        icon: const Icon(Icons.location_searching_rounded, size: 16),
-                        label: const Text('Track Order'),
-                        style: OutlinedButton.styleFrom(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
+                      Row(
+                        children: [
+                          TextButton(
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => ReturnRequestScreen(orderId: order.orderId),
+                                ),
+                              );
+                            },
+                            child: const Text('Return', style: TextStyle(fontSize: 12)),
                           ),
-                        ),
+                          const SizedBox(width: 4),
+                          OutlinedButton.icon(
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => TrackOrderScreen(
+                                    orderId: order.orderId,
+                                    trackingNumber: order.trackingNumber,
+                                  ),
+                                ),
+                              );
+                            },
+                            icon: const Icon(Icons.location_searching_rounded, size: 14),
+                            label: const Text('Track', style: TextStyle(fontSize: 12)),
+                            style: OutlinedButton.styleFrom(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                            ),
+                          ),
+                        ],
                       ),
                     ],
                   ),

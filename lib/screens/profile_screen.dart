@@ -9,6 +9,8 @@ import 'saved_addresses_screen.dart';
 import 'wallet_screen.dart';
 import 'live_chat_support_screen.dart';
 import 'settings_security_screen.dart';
+import 'explore_stories_screen.dart';
+import 'brand_store_screen.dart';
 import '../models/product.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -30,7 +32,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
   String _userPhone = '+91 98765 43210';
   String _userEmail = 'simpal@example.com';
   String _selectedLanguage = 'English';
-  final double _walletBalance = 0.0;
   int _ratingStars = 5;
 
   final List<String> _languages = [
@@ -335,162 +336,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
   }
 
-  // App Wallet Balance Sheet
-  void _showBalanceSheet() {
-    showModalBottomSheet(
-      context: context,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
-      ),
-      builder: (context) {
-        return Padding(
-          padding: const EdgeInsets.all(24),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const Text(
-                    'EmergentStore Balance',
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                  ),
-                  IconButton(
-                    icon: const Icon(Icons.close),
-                    onPressed: () => Navigator.pop(context),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 12),
-              Container(
-                width: double.infinity,
-                padding: const EdgeInsets.all(20),
-                decoration: BoxDecoration(
-                  gradient: const LinearGradient(
-                    colors: [Color(0xFF8B5CF6), Color(0xFF6D28D9)],
-                  ),
-                  borderRadius: BorderRadius.circular(16),
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text(
-                      'Available Credit Balance',
-                      style: TextStyle(color: Colors.white70, fontSize: 13),
-                    ),
-                    const SizedBox(height: 6),
-                    Text(
-                      '₹${_walletBalance.toStringAsFixed(0)}',
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 32,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    const SizedBox(height: 12),
-                    Text(
-                      'Use wallet balance on your next checkout for instant discounts.',
-                      style: TextStyle(color: Colors.white.withValues(alpha: 0.9), fontSize: 12),
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(height: 20),
-              const Text(
-                'Recent Wallet History',
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
-              ),
-              const SizedBox(height: 10),
-              const ListTile(
-                leading: CircleAvatar(
-                  backgroundColor: Color(0xFFDCFCE7),
-                  child: Icon(Icons.add, color: Color(0xFF16A34A)),
-                ),
-                title: Text('Welcome Cashback Bonus'),
-                subtitle: Text('12 Sep 2026'),
-                trailing: Text('+₹0',
-                    style: TextStyle(color: Colors.green, fontWeight: FontWeight.bold)),
-              ),
-            ],
-          ),
-        );
-      },
-    );
-  }
 
-
-
-  // Settings Sheet with Dark Mode Switch
-  void _showSettingsSheet() {
-    final theme = Theme.of(context);
-    final isDark = theme.brightness == Brightness.dark;
-
-    showModalBottomSheet(
-      context: context,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
-      ),
-      builder: (context) {
-        return Padding(
-          padding: const EdgeInsets.all(24),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const Text(
-                    'App Settings',
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                  ),
-                  IconButton(
-                    icon: const Icon(Icons.close),
-                    onPressed: () => Navigator.pop(context),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 12),
-              SwitchListTile(
-                contentPadding: EdgeInsets.zero,
-                title: const Text('Dark Theme'),
-                subtitle: const Text('Switch between light and dark modes'),
-                secondary: Icon(
-                  isDark ? Icons.dark_mode : Icons.light_mode,
-                  color: theme.colorScheme.primary,
-                ),
-                value: isDark,
-                onChanged: (val) {
-                  widget.onThemeChanged(val ? ThemeMode.dark : ThemeMode.light);
-                  Navigator.pop(context);
-                },
-              ),
-              const Divider(),
-              ListTile(
-                contentPadding: EdgeInsets.zero,
-                leading: const Icon(Icons.notifications_active_outlined),
-                title: const Text('Push Notifications'),
-                subtitle: const Text('Order updates & deals alerts'),
-                trailing: Switch(value: true, onChanged: (v) {}),
-              ),
-              const Divider(),
-              ListTile(
-                contentPadding: EdgeInsets.zero,
-                leading: const Icon(Icons.lock_outline),
-                title: const Text('Privacy & Permissions'),
-                trailing: const Icon(Icons.chevron_right),
-                onTap: () {
-                  Navigator.pop(context);
-                  _showLegalPoliciesSheet();
-                },
-              ),
-            ],
-          ),
-        );
-      },
-    );
-  }
 
   // Rate App Dialog
   void _showRateAppDialog() {
@@ -659,65 +505,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
   }
 
-  // Followed Shops Sheet
-  void _showFollowedShopsSheet() {
-    showModalBottomSheet(
-      context: context,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
-      ),
-      builder: (context) {
-        return Padding(
-          padding: const EdgeInsets.all(20),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const Text(
-                    'Followed Shops 🏪',
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                  ),
-                  IconButton(
-                    icon: const Icon(Icons.close),
-                    onPressed: () => Navigator.pop(context),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 12),
-              const ListTile(
-                leading: CircleAvatar(
-                  backgroundColor: Color(0xFFFEF3C7),
-                  child: Icon(Icons.storefront, color: Color(0xFFD97706)),
-                ),
-                title: Text('Royal Ethnic Sarees'),
-                subtitle: Text('4.8 ★ (12.4K Followers)'),
-                trailing: Chip(
-                  label: Text('Following', style: TextStyle(fontSize: 11)),
-                  backgroundColor: Color(0xFFE2E8F0),
-                ),
-              ),
-              const Divider(height: 1),
-              const ListTile(
-                leading: CircleAvatar(
-                  backgroundColor: Color(0xFFE0E7FF),
-                  child: Icon(Icons.storefront, color: Color(0xFF4F46E5)),
-                ),
-                title: Text('Urban Fashion Hub'),
-                subtitle: Text('4.6 ★ (8.1K Followers)'),
-                trailing: Chip(
-                  label: Text('Following', style: TextStyle(fontSize: 11)),
-                  backgroundColor: Color(0xFFE2E8F0),
-                ),
-              ),
-            ],
-          ),
-        );
-      },
-    );
-  }
+
 
   // Shared Products Sheet
   void _showSharedProductsSheet() {
@@ -1152,9 +940,38 @@ class _ProfileScreenState extends State<ProfileScreen> {
             Divider(height: 1, color: isDark ? const Color(0xFF334155) : const Color(0xFFE2E8F0)),
             _buildMenuItem(
               icon: const Icon(Icons.storefront_outlined, color: Color(0xFFF59E0B), size: 24),
-              title: 'Followed Shops',
+              title: 'Followed Brand Stores',
               badgeText: 'New',
-              onTap: _showFollowedShopsSheet,
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => BrandStoreScreen(
+                      onProductTap: (p) {},
+                      onQuickAddToCart: (p) {},
+                    ),
+                  ),
+                );
+              },
+              theme: theme,
+            ),
+            Divider(height: 1, color: isDark ? const Color(0xFF334155) : const Color(0xFFE2E8F0)),
+            _buildMenuItem(
+              icon: const Icon(Icons.photo_camera_outlined, color: Colors.purple, size: 24),
+              title: 'Shopping Lookbook & Stories',
+              badgeText: 'Trending',
+              badgeBgColor: const Color(0xFFFCE7F3),
+              badgeTextColor: const Color(0xFFBE185D),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ExploreStoriesScreen(
+                      onProductTap: (p) {},
+                    ),
+                  ),
+                );
+              },
               theme: theme,
             ),
 
