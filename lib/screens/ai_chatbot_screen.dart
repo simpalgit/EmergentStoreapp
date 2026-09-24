@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 import '../models/product.dart';
 import 'track_order_screen.dart';
 import 'coupons_rewards_screen.dart';
@@ -28,7 +28,7 @@ class _AIChatbotScreenState extends State<AIChatbotScreen> {
   final List<Map<String, dynamic>> _messages = [
     {
       'isUser': false,
-      'text': 'Hello Simpal! 👋 I am your Emergent AI Shopping Assistant powered by Python 🐍. How can I help you today?',
+      'text': 'Hello Simpal! 👋 Welcome to EmergentStore Chat Board. How can I help you today?',
       'time': 'Just now',
       'quickReplies': ['Track Order', 'Festive Sale 50% OFF', 'Flash Sale Deals', 'Coupons & Coins'],
       'recommendation': null,
@@ -41,19 +41,19 @@ class _AIChatbotScreenState extends State<AIChatbotScreen> {
     _checkPythonServerHealth();
   }
 
-  // Check if Python Chatbot HTTP Server is online
+  // Check if Chatbot HTTP Server is online using dart:io HttpClient
   Future<void> _checkPythonServerHealth() async {
     try {
-      final response = await http
-          .get(Uri.parse('http://10.0.2.2:5000/health'))
-          .timeout(const Duration(seconds: 2));
+      final client = HttpClient()..connectionTimeout = const Duration(seconds: 2);
+      final request = await client.getUrl(Uri.parse('http://10.0.2.2:5000/health'));
+      final response = await request.close();
       if (response.statusCode == 200) {
         setState(() {
           _isPythonServerOnline = true;
         });
       }
     } catch (_) {
-      // Python server offline; fallback to local AI engine
+      // Server offline; fallback to embedded local assistant engine
       setState(() {
         _isPythonServerOnline = false;
       });
@@ -91,19 +91,19 @@ class _AIChatbotScreenState extends State<AIChatbotScreen> {
 
     _scrollToBottom();
 
-    // Call Python Server API or Local AI Engine Fallback
+    // Call Server API or Local Assistant Engine Fallback
     Map<String, dynamic> botReply;
 
     try {
-      final url = Uri.parse('http://10.0.2.2:5000/api/chat');
-      final response = await http.post(
-        url,
-        headers: {'Content-Type': 'application/json'},
-        body: jsonEncode({'message': query}),
-      ).timeout(const Duration(seconds: 3));
+      final client = HttpClient()..connectionTimeout = const Duration(seconds: 3);
+      final request = await client.postUrl(Uri.parse('http://10.0.2.2:5000/api/chat'));
+      request.headers.set('Content-Type', 'application/json');
+      request.write(jsonEncode({'message': query}));
+      final response = await request.close();
 
       if (response.statusCode == 200) {
-        final data = jsonDecode(response.body) as Map<String, dynamic>;
+        final responseBody = await response.transform(utf8.decoder).join();
+        final data = jsonDecode(responseBody) as Map<String, dynamic>;
         botReply = {
           'isUser': false,
           'text': data['response'] ?? 'How can I assist you further?',
@@ -131,7 +131,7 @@ class _AIChatbotScreenState extends State<AIChatbotScreen> {
 
   // Smart Local Fallback Response Engine
   Map<String, dynamic> _generateLocalFallbackResponse(String query) {
-    final msg = query.lowerCase;
+    final msg = query.toLowerCase();
 
     if (msg.contains('order') || msg.contains('track') || msg.contains('delivery')) {
       return {
@@ -172,7 +172,7 @@ class _AIChatbotScreenState extends State<AIChatbotScreen> {
     } else {
       return {
         'isUser': false,
-        'text': 'I am Python AI Assistant 🤖. You can ask me about deals, orders, sarees, or coupons!',
+        'text': 'I am your Chat Board Assistant 💬. You can ask me about deals, orders, sarees, or coupons!',
         'time': 'Just now',
         'quickReplies': ['Track Order', 'Festive Sale 50% OFF', 'Flash Sale Deals', 'Wallet & Coins'],
         'recommendation': null,
@@ -192,33 +192,33 @@ class _AIChatbotScreenState extends State<AIChatbotScreen> {
             Container(
               padding: const EdgeInsets.all(6),
               decoration: BoxDecoration(
-                color: Colors.indigo.shade100,
+                color: theme.colorScheme.primary.withValues(alpha: 0.15),
                 shape: BoxShape.circle,
               ),
-              child: const Icon(Icons.smart_toy_rounded, color: Colors.indigo, size: 22),
+              child: Icon(Icons.chat_bubble_rounded, color: theme.colorScheme.primary, size: 22),
             ),
             const SizedBox(width: 10),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const Text(
-                  'Emergent AI Chatbot',
+                  'Emergent Chat Board',
                   style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                 ),
                 Row(
                   children: [
-                    Icon(
+                    const Icon(
                       Icons.circle,
                       size: 8,
-                      color: _isPythonServerOnline ? Colors.green : Colors.amber,
+                      color: Colors.green,
                     ),
                     const SizedBox(width: 4),
                     Text(
-                      _isPythonServerOnline ? 'Python Server Online 🐍' : 'Local AI Engine 🤖',
+                      _isPythonServerOnline ? 'Server Connected 💬' : 'Online Assistant 💬',
                       style: TextStyle(
                         fontSize: 10,
                         fontWeight: FontWeight.bold,
-                        color: _isPythonServerOnline ? Colors.green : Colors.amber.shade800,
+                        color: Colors.green.shade800,
                       ),
                     ),
                   ],
@@ -230,36 +230,6 @@ class _AIChatbotScreenState extends State<AIChatbotScreen> {
       ),
       body: Column(
         children: [
-          // Python Server Status Header Banner
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-            color: _isPythonServerOnline
-                ? Colors.green.withValues(alpha: 0.12)
-                : Colors.amber.withValues(alpha: 0.12),
-            child: Row(
-              children: [
-                Icon(
-                  _isPythonServerOnline ? Icons.check_circle_outline : Icons.info_outline_rounded,
-                  color: _isPythonServerOnline ? Colors.green : Colors.amber.shade900,
-                  size: 16,
-                ),
-                const SizedBox(width: 8),
-                Expanded(
-                  child: Text(
-                    _isPythonServerOnline
-                        ? 'Connected to Python Backend (http://0.0.0.0:5000)'
-                        : 'Python Server offline. Using embedded smart AI engine.',
-                    style: TextStyle(
-                      fontSize: 11,
-                      fontWeight: FontWeight.bold,
-                      color: _isPythonServerOnline ? Colors.green.shade900 : Colors.amber.shade900,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-
           // Messages List
           Expanded(
             child: ListView.builder(
@@ -285,8 +255,8 @@ class _AIChatbotScreenState extends State<AIChatbotScreen> {
                           if (!isUser) ...[
                             CircleAvatar(
                               radius: 14,
-                              backgroundColor: Colors.indigo.shade100,
-                              child: const Icon(Icons.smart_toy_rounded, color: Colors.indigo, size: 16),
+                              backgroundColor: theme.colorScheme.primary.withValues(alpha: 0.15),
+                              child: Icon(Icons.chat_bubble_rounded, color: theme.colorScheme.primary, size: 16),
                             ),
                             const SizedBox(width: 8),
                           ],
@@ -438,7 +408,7 @@ class _AIChatbotScreenState extends State<AIChatbotScreen> {
                 children: [
                   const SizedBox(width: 8),
                   Text(
-                    'Python AI is typing...',
+                    'Chat Board is typing...',
                     style: TextStyle(color: theme.hintColor, fontSize: 12, fontStyle: FontStyle.italic),
                   ),
                 ],
@@ -464,7 +434,7 @@ class _AIChatbotScreenState extends State<AIChatbotScreen> {
                   child: TextField(
                     controller: _textController,
                     decoration: InputDecoration(
-                      hintText: 'Ask Python AI about products, deals, order...',
+                      hintText: 'Ask Chat Board about products, deals, order...',
                       contentPadding: const EdgeInsets.symmetric(horizontal: 18, vertical: 12),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(24),
@@ -491,8 +461,4 @@ class _AIChatbotScreenState extends State<AIChatbotScreen> {
       ),
     );
   }
-}
-
-extension StringExtension on String {
-  String get lowerCase => toLowerCase();
 }

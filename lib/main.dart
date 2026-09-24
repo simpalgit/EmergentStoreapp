@@ -277,8 +277,8 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
             ),
           );
         },
-        icon: const Icon(Icons.smart_toy_rounded, color: Colors.white),
-        label: const Text('Python AI', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+        icon: const Icon(Icons.chat_bubble_rounded, color: Colors.white),
+        label: const Text('Chat Board', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
         backgroundColor: Theme.of(context).colorScheme.primary,
       ),
       bottomNavigationBar: Container(
