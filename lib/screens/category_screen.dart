@@ -35,7 +35,7 @@ class CategorySubItem {
 
   const CategorySubItem({
     required this.title,
-    this.startingPrice = '',
+    this.startingPrice = '₹199',
     required this.icon,
     required this.color,
   });
@@ -56,21 +56,21 @@ class CategoryScreen extends StatefulWidget {
 }
 
 class _CategoryScreenState extends State<CategoryScreen> {
-  int _selectedCategoryIndex = 1; // Default to 'Kurti, Saree &...'
+  int _selectedCategoryIndex = 1; // Default to 'Kurti & Sarees'
 
-  final List<CategoryItem> _categories = const [
+  final List<CategoryItem> _categories = [
     CategoryItem(
       id: 'popular',
-      title: 'Popular',
-      icon: Icons.star_rounded,
+      title: 'Trending',
+      icon: Icons.auto_awesome_rounded,
       color: Colors.amber,
       groups: [
         CategoryGroup(
-          title: 'Top Picks',
+          title: 'Top Popular Categories',
           items: [
-            CategorySubItem(title: 'Sarees', startingPrice: '₹199', icon: Icons.checkroom_rounded, color: Colors.purple),
-            CategorySubItem(title: 'Kurtis', startingPrice: '₹299', icon: Icons.woman_rounded, color: Colors.pink),
-            CategorySubItem(title: 'Jewellery', startingPrice: '₹99', icon: Icons.auto_awesome_rounded, color: Colors.amber),
+            CategorySubItem(title: 'Sarees', startingPrice: '₹299', icon: Icons.checkroom_rounded, color: Colors.purple),
+            CategorySubItem(title: 'Kurtis', startingPrice: '₹199', icon: Icons.woman_rounded, color: Colors.pink),
+            CategorySubItem(title: 'Jewellery', startingPrice: '₹99', icon: Icons.diamond_rounded, color: Colors.amber),
             CategorySubItem(title: 'Western', startingPrice: '₹399', icon: Icons.dry_cleaning_rounded, color: Colors.deepOrange),
             CategorySubItem(title: 'Footwear', startingPrice: '₹199', icon: Icons.roller_skating_rounded, color: Colors.teal),
             CategorySubItem(title: 'Watches', startingPrice: '₹149', icon: Icons.watch_rounded, color: Colors.indigo),
@@ -80,115 +80,95 @@ class _CategoryScreenState extends State<CategoryScreen> {
     ),
     CategoryItem(
       id: 'ethnic',
-      title: 'Kurti, Saree &...',
+      title: 'Kurti & Sarees',
       icon: Icons.woman_rounded,
-      color: Color(0xFF8A1C78),
+      color: const Color(0xFF6366F1),
       groups: [
         CategoryGroup(
-          title: 'Sarees',
+          title: 'Saree Collection',
           items: [
-            CategorySubItem(title: 'All Sarees', icon: Icons.checkroom_rounded, color: Colors.teal),
-            CategorySubItem(title: 'Georgette Sarees', icon: Icons.woman_2_rounded, color: Colors.pink),
-            CategorySubItem(title: 'Chiffon Sarees', icon: Icons.dry_cleaning_rounded, color: Colors.purple),
-            CategorySubItem(title: 'Cotton Sarees', icon: Icons.checkroom_outlined, color: Colors.blue),
-            CategorySubItem(title: 'Net Sarees', icon: Icons.light_mode_outlined, color: Colors.green),
-            CategorySubItem(title: 'Under 299', icon: Icons.discount_rounded, color: Colors.orange),
-            CategorySubItem(title: 'Silk Sarees', icon: Icons.auto_awesome_rounded, color: Colors.red),
-            CategorySubItem(title: 'New Collection', icon: Icons.new_releases_rounded, color: Colors.teal),
-            CategorySubItem(title: 'Bridal Sarees', icon: Icons.diamond_rounded, color: Colors.pinkAccent),
+            CategorySubItem(title: 'All Sarees', startingPrice: '₹299', icon: Icons.checkroom_rounded, color: Colors.teal),
+            CategorySubItem(title: 'Banarasi Silk', startingPrice: '₹599', icon: Icons.woman_2_rounded, color: Colors.pink),
+            CategorySubItem(title: 'Georgette', startingPrice: '₹399', icon: Icons.dry_cleaning_rounded, color: Colors.purple),
+            CategorySubItem(title: 'Cotton Sarees', startingPrice: '₹249', icon: Icons.checkroom_outlined, color: Colors.blue),
+            CategorySubItem(title: 'Chiffon & Net', startingPrice: '₹349', icon: Icons.light_mode_outlined, color: Colors.green),
+            CategorySubItem(title: 'Bridal Heavy', startingPrice: '₹999', icon: Icons.diamond_rounded, color: Colors.pinkAccent),
           ],
         ),
         CategoryGroup(
-          title: 'Kurtis',
+          title: 'Kurti & Suit Sets',
           items: [
-            CategorySubItem(title: 'All Kurtis', icon: Icons.woman_rounded, color: Colors.amber),
-            CategorySubItem(title: 'Anarkali Kurtis', icon: Icons.dry_cleaning_rounded, color: Colors.red),
-            CategorySubItem(title: 'Rayon Kurtis', icon: Icons.checkroom_rounded, color: Colors.indigo),
-            CategorySubItem(title: 'Cotton Kurtis', icon: Icons.woman_2_rounded, color: Colors.green),
-            CategorySubItem(title: 'Kurti Sets', icon: Icons.checkroom_outlined, color: Colors.purple),
-            CategorySubItem(title: 'Under 399', icon: Icons.discount_outlined, color: Colors.orange),
+            CategorySubItem(title: 'Anarkali Sets', startingPrice: '₹499', icon: Icons.woman_rounded, color: Colors.amber),
+            CategorySubItem(title: 'Cotton Kurtis', startingPrice: '₹199', icon: Icons.dry_cleaning_rounded, color: Colors.red),
+            CategorySubItem(title: 'Rayon Kurtis', startingPrice: '₹299', icon: Icons.checkroom_rounded, color: Colors.indigo),
+            CategorySubItem(title: 'Straight Suits', startingPrice: '₹399', icon: Icons.woman_2_rounded, color: Colors.green),
           ],
         ),
       ],
     ),
     CategoryItem(
       id: 'western',
-      title: 'Women Western',
+      title: 'Western Wear',
       icon: Icons.checkroom_rounded,
       color: Colors.deepOrange,
       groups: [
         CategoryGroup(
-          title: 'Topwear & Dresses',
+          title: 'Tops & Casual Wear',
           items: [
-            CategorySubItem(title: 'Tops', icon: Icons.dry_cleaning_rounded, color: Colors.deepOrange),
-            CategorySubItem(title: 'Dresses', icon: Icons.woman_rounded, color: Colors.pink),
-            CategorySubItem(title: 'Jeans', icon: Icons.iron_rounded, color: Colors.blue),
-            CategorySubItem(title: 'Gowns', icon: Icons.auto_awesome, color: Colors.purple),
+            CategorySubItem(title: 'Crop Tops', startingPrice: '₹199', icon: Icons.dry_cleaning_rounded, color: Colors.deepOrange),
+            CategorySubItem(title: 'Dresses', startingPrice: '₹399', icon: Icons.woman_rounded, color: Colors.pink),
+            CategorySubItem(title: 'Jeans & Denim', startingPrice: '₹499', icon: Icons.iron_rounded, color: Colors.blue),
+            CategorySubItem(title: 'Party Gowns', startingPrice: '₹799', icon: Icons.auto_awesome, color: Colors.purple),
           ],
         ),
       ],
     ),
     CategoryItem(
-      id: 'lingerie',
-      title: 'Lingerie',
-      icon: Icons.favorite_border_rounded,
-      color: Colors.pinkAccent,
+      id: 'jewellery',
+      title: 'Jewellery',
+      icon: Icons.diamond_rounded,
+      color: Colors.amber,
       groups: [
         CategoryGroup(
-          title: 'Innerwear',
+          title: 'Fashion Jewellery',
           items: [
-            CategorySubItem(title: 'Bra', icon: Icons.favorite_rounded, color: Colors.pink),
-            CategorySubItem(title: 'Briefs', icon: Icons.checkroom, color: Colors.purple),
-            CategorySubItem(title: 'Nightwear', icon: Icons.bedtime_rounded, color: Colors.indigo),
+            CategorySubItem(title: 'Kundan Sets', startingPrice: '₹299', icon: Icons.auto_awesome_rounded, color: Colors.amber),
+            CategorySubItem(title: 'Earrings & Jhumkas', startingPrice: '₹99', icon: Icons.diamond_rounded, color: Colors.purple),
+            CategorySubItem(title: 'Bangles & Cuffs', startingPrice: '₹149', icon: Icons.circle_outlined, color: Colors.pink),
+            CategorySubItem(title: 'Silver Oxidised', startingPrice: '₹199', icon: Icons.stars_rounded, color: Colors.teal),
           ],
         ),
       ],
     ),
     CategoryItem(
       id: 'men',
-      title: 'Men',
+      title: 'Men Fashion',
       icon: Icons.man_rounded,
-      color: Colors.red,
+      color: Colors.indigo,
       groups: [
         CategoryGroup(
-          title: 'Men Fashion',
+          title: 'Men Wear',
           items: [
-            CategorySubItem(title: 'T-Shirts', icon: Icons.dry_cleaning_rounded, color: Colors.red),
-            CategorySubItem(title: 'Shirts', icon: Icons.checkroom_rounded, color: Colors.blue),
-            CategorySubItem(title: 'Jeans & Trousers', icon: Icons.straighten, color: Colors.blueGrey),
-            CategorySubItem(title: 'Kurtas', icon: Icons.woman_rounded, color: Colors.amber),
+            CategorySubItem(title: 'T-Shirts', startingPrice: '₹199', icon: Icons.dry_cleaning_rounded, color: Colors.indigo),
+            CategorySubItem(title: 'Casual Shirts', startingPrice: '₹349', icon: Icons.checkroom_rounded, color: Colors.blue),
+            CategorySubItem(title: 'Jeans', startingPrice: '₹499', icon: Icons.straighten, color: Colors.blueGrey),
+            CategorySubItem(title: 'Ethnic Kurtas', startingPrice: '₹399', icon: Icons.woman_rounded, color: Colors.amber),
           ],
         ),
       ],
     ),
     CategoryItem(
-      id: 'kids',
-      title: 'Kids & Toys',
-      icon: Icons.toys_rounded,
-      color: Colors.orange,
-      groups: [
-        CategoryGroup(
-          title: 'Kids Wear',
-          items: [
-            CategorySubItem(title: 'Boys Clothing', icon: Icons.child_care_rounded, color: Colors.blue),
-            CategorySubItem(title: 'Girls Clothing', icon: Icons.child_friendly_rounded, color: Colors.pink),
-            CategorySubItem(title: 'Soft Toys', icon: Icons.smart_toy_rounded, color: Colors.amber),
-          ],
-        ),
-      ],
-    ),
-    CategoryItem(
-      id: 'home',
-      title: 'Home &...',
-      icon: Icons.home_rounded,
+      id: 'footwear',
+      title: 'Footwear',
+      icon: Icons.roller_skating_rounded,
       color: Colors.teal,
       groups: [
         CategoryGroup(
-          title: 'Home Decor',
+          title: 'Shoes & Sandals',
           items: [
-            CategorySubItem(title: 'Bedsheets', icon: Icons.bed_rounded, color: Colors.teal),
-            CategorySubItem(title: 'Curtains', icon: Icons.curtains_rounded, color: Colors.purple),
-            CategorySubItem(title: 'Kitchenware', icon: Icons.soup_kitchen_rounded, color: Colors.deepOrange),
+            CategorySubItem(title: 'Heels & Wedges', startingPrice: '₹299', icon: Icons.roller_skating_rounded, color: Colors.pink),
+            CategorySubItem(title: 'Flats & Juttis', startingPrice: '₹199', icon: Icons.checkroom, color: Colors.amber),
+            CategorySubItem(title: 'Sneakers', startingPrice: '₹499', icon: Icons.directions_run_rounded, color: Colors.indigo),
           ],
         ),
       ],
@@ -204,234 +184,272 @@ class _CategoryScreenState extends State<CategoryScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          'CATEGORIES',
+          'EXPLORE CATEGORIES',
           style: TextStyle(
-            fontWeight: FontWeight.w800,
-            fontSize: 18,
-            letterSpacing: 0.8,
-            color: Color(0xFF212121),
+            fontWeight: FontWeight.bold,
+            fontSize: 16,
+            letterSpacing: 0.5,
           ),
         ),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.search, color: Color(0xFF212121)),
-            onPressed: () {},
-          ),
-          IconButton(
-            icon: const Icon(Icons.favorite_border, color: Color(0xFF212121)),
-            onPressed: () {},
-          ),
-          Padding(
-            padding: const EdgeInsets.only(right: 12),
-            child: Stack(
-              alignment: Alignment.center,
-              children: [
-                IconButton(
-                  icon: const Icon(Icons.shopping_cart_outlined, color: Color(0xFF212121)),
-                  onPressed: () {},
+      ),
+      body: Row(
+        children: [
+          // -------------------------------------------------------------------
+          // LEFT HANDCRAFTED SIDEBAR
+          // -------------------------------------------------------------------
+          Container(
+            width: 104,
+            decoration: BoxDecoration(
+              color: isDark ? const Color(0xFF1E293B) : const Color(0xFFF1F5F9),
+              border: Border(
+                right: BorderSide(
+                  color: theme.dividerColor.withValues(alpha: 0.15),
                 ),
-                Positioned(
-                  top: 8,
-                  right: 8,
-                  child: Container(
-                    padding: const EdgeInsets.all(4),
-                    decoration: const BoxDecoration(
-                      color: Color(0xFF8A1C78),
-                      shape: BoxShape.circle,
+              ),
+            ),
+            child: ListView.builder(
+              padding: const EdgeInsets.symmetric(vertical: 8),
+              itemCount: _categories.length,
+              itemBuilder: (context, index) {
+                final cat = _categories[index];
+                final isSelected = index == _selectedCategoryIndex;
+
+                return InkWell(
+                  onTap: () {
+                    setState(() {
+                      _selectedCategoryIndex = index;
+                    });
+                  },
+                  borderRadius: BorderRadius.circular(16),
+                  child: AnimatedContainer(
+                    duration: const Duration(milliseconds: 200),
+                    margin: const EdgeInsets.symmetric(vertical: 4, horizontal: 6),
+                    padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 6),
+                    decoration: BoxDecoration(
+                      color: isSelected
+                          ? (isDark ? const Color(0xFF0F172A) : Colors.white)
+                          : Colors.transparent,
+                      borderRadius: BorderRadius.circular(16),
+                      boxShadow: isSelected
+                          ? [
+                              BoxShadow(
+                                color: Colors.black.withValues(alpha: 0.04),
+                                blurRadius: 6,
+                                offset: const Offset(0, 2),
+                              ),
+                            ]
+                          : null,
                     ),
-                    child: const Text(
-                      '1',
-                      style: TextStyle(color: Colors.white, fontSize: 10, fontWeight: FontWeight.bold),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Container(
+                          padding: const EdgeInsets.all(8),
+                          decoration: BoxDecoration(
+                            color: isSelected
+                                ? cat.color.withValues(alpha: 0.15)
+                                : (isDark ? const Color(0xFF334155) : Colors.white),
+                            shape: BoxShape.circle,
+                          ),
+                          child: Icon(
+                            cat.icon,
+                            size: 20,
+                            color: isSelected ? cat.color : theme.hintColor,
+                          ),
+                        ),
+                        const SizedBox(height: 6),
+                        Text(
+                          cat.title,
+                          textAlign: TextAlign.center,
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                            fontSize: 11,
+                            fontWeight: isSelected ? FontWeight.bold : FontWeight.w500,
+                            color: isSelected
+                                ? theme.colorScheme.primary
+                                : (isDark ? Colors.white70 : const Color(0xFF475569)),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
-                ),
-              ],
+                );
+              },
             ),
           ),
-        ],
-      ),
-      body: Column(
-        children: [
-          const Divider(height: 1, thickness: 1, color: Color(0xFFEEEEEE)),
-          Expanded(
-            child: Row(
-              children: [
-                // -------------------------------------------------------------
-                // LEFT SIDEBAR (VERTICAL CATEGORY SELECTOR)
-                // -------------------------------------------------------------
-                Container(
-                  width: 98,
-                  color: isDark ? const Color(0xFF1E293B) : const Color(0xFFF7F8FA),
-                  child: ListView.builder(
-                    itemCount: _categories.length,
-                    itemBuilder: (context, index) {
-                      final cat = _categories[index];
-                      final isSelected = index == _selectedCategoryIndex;
 
-                      return InkWell(
-                        onTap: () {
-                          setState(() {
-                            _selectedCategoryIndex = index;
-                          });
-                        },
-                        child: Container(
-                          padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 4),
-                          decoration: BoxDecoration(
-                            color: isSelected ? Colors.white : Colors.transparent,
-                            border: Border(
-                              left: BorderSide(
-                                color: isSelected ? const Color(0xFF8A1C78) : Colors.transparent,
-                                width: 4,
-                              ),
-                            ),
-                          ),
+          // -------------------------------------------------------------------
+          // RIGHT HANDCRAFTED CARD-BASED GRID CONTENT
+          // -------------------------------------------------------------------
+          Expanded(
+            child: Container(
+              color: isDark ? const Color(0xFF0F172A) : const Color(0xFFF8FAFC),
+              child: ListView(
+                padding: const EdgeInsets.all(16),
+                children: [
+                  // Category Header Banner Card
+                  Container(
+                    padding: const EdgeInsets.all(16),
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        colors: [activeCategory.color, activeCategory.color.withValues(alpha: 0.75)],
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                      ),
+                      borderRadius: BorderRadius.circular(20),
+                      boxShadow: [
+                        BoxShadow(
+                          color: activeCategory.color.withValues(alpha: 0.25),
+                          blurRadius: 10,
+                          offset: const Offset(0, 4),
+                        ),
+                      ],
+                    ),
+                    child: Row(
+                      children: [
+                        Expanded(
                           child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              CircleAvatar(
-                                radius: 18,
-                                backgroundColor: isSelected
-                                    ? const Color(0xFFF8E7F4)
-                                    : (isDark ? Colors.grey.shade800 : const Color(0xFFEDEDED)),
-                                child: Icon(
-                                  cat.icon,
-                                  size: 18,
-                                  color: isSelected ? const Color(0xFF8A1C78) : Colors.amber.shade700,
+                              Container(
+                                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                                decoration: BoxDecoration(
+                                  color: Colors.white.withValues(alpha: 0.2),
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                                child: const Text(
+                                  'FEATURED COLLECTION',
+                                  style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 9),
                                 ),
                               ),
                               const SizedBox(height: 6),
                               Text(
-                                cat.title,
-                                textAlign: TextAlign.center,
-                                maxLines: 2,
-                                overflow: TextOverflow.ellipsis,
-                                style: TextStyle(
-                                  fontSize: 11,
-                                  fontWeight: isSelected ? FontWeight.bold : FontWeight.w500,
-                                  color: isSelected
-                                      ? const Color(0xFF8A1C78)
-                                      : (isDark ? Colors.white70 : const Color(0xFF555555)),
+                                activeCategory.title,
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold,
                                 ),
+                              ),
+                              const SizedBox(height: 2),
+                              const Text(
+                                'Explore top handcrafted styles',
+                                style: TextStyle(color: Colors.white70, fontSize: 11),
                               ),
                             ],
                           ),
                         ),
-                      );
-                    },
-                  ),
-                ),
-
-                const VerticalDivider(width: 1, thickness: 1, color: Color(0xFFEEEEEE)),
-
-                // -------------------------------------------------------------
-                // RIGHT CONTENT AREA (SUB-CATEGORIES 3-COLUMN GRID)
-                // -------------------------------------------------------------
-                Expanded(
-                  child: Container(
-                    color: isDark ? const Color(0xFF0F172A) : Colors.white,
-                    child: ListView(
-                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-                      children: [
-                        // Header bar text e.g., "KURTI, SAREE & LEHENGA"
-                        Row(
-                          children: [
-                            Text(
-                              activeCategory.title.toUpperCase(),
-                              style: const TextStyle(
-                                fontSize: 12,
-                                fontWeight: FontWeight.bold,
-                                color: Color(0xFF757575),
-                                letterSpacing: 0.5,
-                              ),
-                            ),
-                            const SizedBox(width: 8),
-                            const Expanded(
-                              child: Divider(color: Color(0xFFE0E0E0), thickness: 1),
-                            ),
-                          ],
-                        ),
-
-                        const SizedBox(height: 12),
-
-                        // Groups loop e.g., "Sarees", "Kurtis"
-                        ...activeCategory.groups.map((group) {
-                          return Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                group.title,
-                                style: const TextStyle(
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold,
-                                  color: Color(0xFF212121),
-                                ),
-                              ),
-                              const SizedBox(height: 12),
-
-                              // 3-Column Grid for Sub-categories
-                              GridView.builder(
-                                shrinkWrap: true,
-                                physics: const NeverScrollableScrollPhysics(),
-                                itemCount: group.items.length,
-                                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                                  crossAxisCount: 3,
-                                  childAspectRatio: 0.72,
-                                  crossAxisSpacing: 10,
-                                  mainAxisSpacing: 12,
-                                ),
-                                itemBuilder: (context, idx) {
-                                  final item = group.items[idx];
-                                  return InkWell(
-                                    onTap: () {},
-                                    borderRadius: BorderRadius.circular(12),
-                                    child: Column(
-                                      children: [
-                                        Expanded(
-                                          child: Container(
-                                            width: double.infinity,
-                                            decoration: BoxDecoration(
-                                              color: const Color(0xFFF5F5F5),
-                                              borderRadius: BorderRadius.circular(12),
-                                            ),
-                                            child: Column(
-                                              mainAxisAlignment: MainAxisAlignment.center,
-                                              children: [
-                                                Icon(
-                                                  item.icon,
-                                                  size: 38,
-                                                  color: item.color,
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        ),
-                                        const SizedBox(height: 6),
-                                        Text(
-                                          item.title,
-                                          textAlign: TextAlign.center,
-                                          maxLines: 2,
-                                          overflow: TextOverflow.ellipsis,
-                                          style: const TextStyle(
-                                            fontSize: 11,
-                                            fontWeight: FontWeight.w500,
-                                            color: Color(0xFF424242),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  );
-                                },
-                              ),
-
-                              const SizedBox(height: 20),
-                            ],
-                          );
-                        }),
+                        Icon(activeCategory.icon, color: Colors.white, size: 42),
                       ],
                     ),
                   ),
-                ),
-              ],
+
+                  const SizedBox(height: 20),
+
+                  // Groups & Cards
+                  ...activeCategory.groups.map((group) {
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          group.title,
+                          style: TextStyle(
+                            fontSize: 15,
+                            fontWeight: FontWeight.bold,
+                            color: isDark ? Colors.white : const Color(0xFF1E293B),
+                          ),
+                        ),
+                        const SizedBox(height: 12),
+
+                        // Handcrafted 3-Column Card Grid
+                        GridView.builder(
+                          shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(),
+                          itemCount: group.items.length,
+                          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 3,
+                            childAspectRatio: 0.72,
+                            crossAxisSpacing: 10,
+                            mainAxisSpacing: 12,
+                          ),
+                          itemBuilder: (context, idx) {
+                            final item = group.items[idx];
+                            return Container(
+                              decoration: BoxDecoration(
+                                color: isDark ? const Color(0xFF1E293B) : Colors.white,
+                                borderRadius: BorderRadius.circular(16),
+                                border: Border.all(
+                                  color: isDark ? const Color(0xFF334155) : const Color(0xFFE2E8F0),
+                                ),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.black.withValues(alpha: 0.03),
+                                    blurRadius: 6,
+                                    offset: const Offset(0, 2),
+                                  ),
+                                ],
+                              ),
+                              child: InkWell(
+                                onTap: () {
+                                  widget.onProductTap(sampleProducts.first);
+                                },
+                                borderRadius: BorderRadius.circular(16),
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8),
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Container(
+                                        padding: const EdgeInsets.all(10),
+                                        decoration: BoxDecoration(
+                                          color: item.color.withValues(alpha: 0.12),
+                                          shape: BoxShape.circle,
+                                        ),
+                                        child: Icon(item.icon, size: 26, color: item.color),
+                                      ),
+                                      const SizedBox(height: 8),
+                                      Text(
+                                        item.title,
+                                        textAlign: TextAlign.center,
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
+                                        style: TextStyle(
+                                          fontSize: 11,
+                                          fontWeight: FontWeight.bold,
+                                          color: isDark ? Colors.white : const Color(0xFF1E293B),
+                                        ),
+                                      ),
+                                      const SizedBox(height: 2),
+                                      Container(
+                                        padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 1),
+                                        decoration: BoxDecoration(
+                                          color: Colors.green.shade50,
+                                          borderRadius: BorderRadius.circular(6),
+                                        ),
+                                        child: Text(
+                                          'From ${item.startingPrice}',
+                                          style: TextStyle(
+                                            fontSize: 9,
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.green.shade800,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            );
+                          },
+                        ),
+
+                        const SizedBox(height: 20),
+                      ],
+                    );
+                  }),
+                ],
+              ),
             ),
           ),
         ],

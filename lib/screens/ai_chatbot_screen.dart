@@ -28,9 +28,9 @@ class _AIChatbotScreenState extends State<AIChatbotScreen> {
   final List<Map<String, dynamic>> _messages = [
     {
       'isUser': false,
-      'text': 'Hello Simpal! 👋 Welcome to EmergentStore Chat Board. How can I help you today?',
+      'text': 'Welcome to EmergentStore Boutique Concierge! 🛍️✨ How may I assist you with orders, styling, or festive discounts today?',
       'time': 'Just now',
-      'quickReplies': ['Track Order', 'Festive Sale 50% OFF', 'Flash Sale Deals', 'Coupons & Coins'],
+      'quickReplies': ['Track Live Order', 'Festive Sarees 50% OFF', 'Flash Sale Deals', 'Claim Free Coupons'],
       'recommendation': null,
     },
   ];
@@ -53,7 +53,6 @@ class _AIChatbotScreenState extends State<AIChatbotScreen> {
         });
       }
     } catch (_) {
-      // Server offline; fallback to embedded local assistant engine
       setState(() {
         _isPythonServerOnline = false;
       });
@@ -129,18 +128,18 @@ class _AIChatbotScreenState extends State<AIChatbotScreen> {
     _scrollToBottom();
   }
 
-  // Smart Local Fallback Response Engine
+  // Smart Handcrafted Local Response Engine
   Map<String, dynamic> _generateLocalFallbackResponse(String query) {
     final msg = query.toLowerCase();
 
     if (msg.contains('order') || msg.contains('track') || msg.contains('delivery')) {
       return {
         'isUser': false,
-        'text': '🚚 Your order #EMG-89241 is Out for Delivery today by 6:00 PM with partner Rajesh Kumar!',
+        'text': '🚚 Great news! Your order #EMG-89241 is Out for Delivery today by 6:00 PM with partner Rajesh Kumar.',
         'time': 'Just now',
-        'quickReplies': ['Track Live Status', 'Contact Delivery Agent'],
+        'quickReplies': ['Track Live Map', 'Call Delivery Partner'],
         'recommendation': {
-          'title': 'Order #EMG-89241',
+          'title': 'Order #EMG-89241 • 2 Items',
           'subtitle': 'Arriving Today by 6 PM',
           'action': 'TRACK_ORDER',
         },
@@ -148,9 +147,9 @@ class _AIChatbotScreenState extends State<AIChatbotScreen> {
     } else if (msg.contains('saree') || msg.contains('ethnic') || msg.contains('kurti')) {
       return {
         'isUser': false,
-        'text': '✨ Here is our top trending Silk Blend Banarasi Designer Saree at 56% OFF!',
+        'text': '✨ Here is our top recommended Silk Blend Banarasi Designer Saree with flat 56% OFF!',
         'time': 'Just now',
-        'quickReplies': ['View Sarees', 'Apply FESTIVE50'],
+        'quickReplies': ['View Sarees', 'Apply FESTIVE50 Code'],
         'recommendation': {
           'title': 'Silk Blend Banarasi Designer Saree',
           'price': '₹1,299',
@@ -160,19 +159,19 @@ class _AIChatbotScreenState extends State<AIChatbotScreen> {
     } else if (msg.contains('coupon') || msg.contains('discount') || msg.contains('offer')) {
       return {
         'isUser': false,
-        'text': '🎁 Use code FESTIVE50 at checkout for Flat 50% OFF + 200 Bonus Coins!',
+        'text': '🎁 Use promo code FESTIVE50 at checkout for Flat 50% OFF + 200 Bonus Coins!',
         'time': 'Just now',
         'quickReplies': ['Copy Code FESTIVE50', 'Scratch & Win'],
         'recommendation': {
           'title': 'FESTIVE50 Promo Coupon',
-          'subtitle': 'Flat 50% OFF',
+          'subtitle': 'Flat 50% Instant Discount',
           'action': 'COPY_COUPON',
         },
       };
     } else {
       return {
         'isUser': false,
-        'text': 'I am your Chat Board Assistant 💬. You can ask me about deals, orders, sarees, or coupons!',
+        'text': 'I am your Emergent Shopping Concierge 💬. How can I help you find products or check delivery updates?',
         'time': 'Just now',
         'quickReplies': ['Track Order', 'Festive Sale 50% OFF', 'Flash Sale Deals', 'Wallet & Coins'],
         'recommendation': null,
@@ -186,16 +185,14 @@ class _AIChatbotScreenState extends State<AIChatbotScreen> {
     final isDark = theme.brightness == Brightness.dark;
 
     return Scaffold(
+      backgroundColor: isDark ? const Color(0xFF0F172A) : const Color(0xFFF8FAFC),
       appBar: AppBar(
         title: Row(
           children: [
-            Container(
-              padding: const EdgeInsets.all(6),
-              decoration: BoxDecoration(
-                color: theme.colorScheme.primary.withValues(alpha: 0.15),
-                shape: BoxShape.circle,
-              ),
-              child: Icon(Icons.chat_bubble_rounded, color: theme.colorScheme.primary, size: 22),
+            CircleAvatar(
+              radius: 18,
+              backgroundColor: theme.colorScheme.primary.withValues(alpha: 0.15),
+              child: Icon(Icons.support_agent_rounded, color: theme.colorScheme.primary, size: 20),
             ),
             const SizedBox(width: 10),
             Column(
@@ -207,14 +204,10 @@ class _AIChatbotScreenState extends State<AIChatbotScreen> {
                 ),
                 Row(
                   children: [
-                    const Icon(
-                      Icons.circle,
-                      size: 8,
-                      color: Colors.green,
-                    ),
+                    const Icon(Icons.circle, size: 8, color: Colors.green),
                     const SizedBox(width: 4),
                     Text(
-                      _isPythonServerOnline ? 'Server Connected 💬' : 'Online Assistant 💬',
+                      _isPythonServerOnline ? 'Python Server Online 🐍' : 'Live Concierge 💬',
                       style: TextStyle(
                         fontSize: 10,
                         fontWeight: FontWeight.bold,
@@ -247,49 +240,49 @@ class _AIChatbotScreenState extends State<AIChatbotScreen> {
                   child: Column(
                     crossAxisAlignment: isUser ? CrossAxisAlignment.end : CrossAxisAlignment.start,
                     children: [
-                      // Chat Bubble
+                      // Chat Bubble Container
                       Row(
                         mainAxisAlignment: isUser ? MainAxisAlignment.end : MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           if (!isUser) ...[
                             CircleAvatar(
-                              radius: 14,
-                              backgroundColor: theme.colorScheme.primary.withValues(alpha: 0.15),
-                              child: Icon(Icons.chat_bubble_rounded, color: theme.colorScheme.primary, size: 16),
+                              radius: 16,
+                              backgroundColor: theme.colorScheme.primary.withValues(alpha: 0.12),
+                              child: Icon(Icons.support_agent_rounded, color: theme.colorScheme.primary, size: 18),
                             ),
                             const SizedBox(width: 8),
                           ],
                           Flexible(
                             child: Container(
-                              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                              padding: const EdgeInsets.all(16),
                               decoration: BoxDecoration(
                                 color: isUser
                                     ? theme.colorScheme.primary
                                     : (isDark ? const Color(0xFF1E293B) : Colors.white),
                                 borderRadius: BorderRadius.only(
-                                  topLeft: const Radius.circular(18),
-                                  topRight: const Radius.circular(18),
-                                  bottomLeft: Radius.circular(isUser ? 18 : 4),
-                                  bottomRight: Radius.circular(isUser ? 4 : 18),
+                                  topLeft: const Radius.circular(20),
+                                  topRight: const Radius.circular(20),
+                                  bottomLeft: Radius.circular(isUser ? 20 : 4),
+                                  bottomRight: Radius.circular(isUser ? 4 : 20),
                                 ),
                                 border: isUser
                                     ? null
-                                    : Border.all(color: theme.dividerColor.withValues(alpha: 0.2)),
+                                    : Border.all(color: isDark ? const Color(0xFF334155) : const Color(0xFFE2E8F0)),
                                 boxShadow: [
                                   BoxShadow(
                                     color: Colors.black.withValues(alpha: 0.04),
-                                    blurRadius: 6,
-                                    offset: const Offset(0, 2),
+                                    blurRadius: 8,
+                                    offset: const Offset(0, 3),
                                   ),
                                 ],
                               ),
                               child: Text(
                                 msg['text'],
                                 style: TextStyle(
-                                  color: isUser ? Colors.white : (isDark ? Colors.white : Colors.black87),
+                                  color: isUser ? Colors.white : (isDark ? Colors.white : const Color(0xFF1E293B)),
                                   fontSize: 14,
-                                  height: 1.35,
+                                  height: 1.4,
                                 ),
                               ),
                             ),
@@ -297,21 +290,28 @@ class _AIChatbotScreenState extends State<AIChatbotScreen> {
                         ],
                       ),
 
-                      // Recommendation Card Widget (if available)
+                      // Rich Recommendation Card (if present)
                       if (rec != null) ...[
-                        const SizedBox(height: 8),
+                        const SizedBox(height: 10),
                         Padding(
-                          padding: const EdgeInsets.only(left: 36),
+                          padding: const EdgeInsets.only(left: 40),
                           child: Container(
-                            padding: const EdgeInsets.all(12),
+                            padding: const EdgeInsets.all(14),
                             decoration: BoxDecoration(
                               color: isDark ? const Color(0xFF1E293B) : Colors.indigo.shade50,
-                              borderRadius: BorderRadius.circular(14),
+                              borderRadius: BorderRadius.circular(16),
                               border: Border.all(color: Colors.indigo.shade200),
                             ),
                             child: Row(
                               children: [
-                                const Icon(Icons.stars_rounded, color: Colors.indigo, size: 32),
+                                Container(
+                                  padding: const EdgeInsets.all(10),
+                                  decoration: BoxDecoration(
+                                    color: theme.colorScheme.primary.withValues(alpha: 0.12),
+                                    shape: BoxShape.circle,
+                                  ),
+                                  child: Icon(Icons.stars_rounded, color: theme.colorScheme.primary, size: 24),
+                                ),
                                 const SizedBox(width: 12),
                                 Expanded(
                                   child: Column(
@@ -354,9 +354,9 @@ class _AIChatbotScreenState extends State<AIChatbotScreen> {
                                     backgroundColor: theme.colorScheme.primary,
                                     foregroundColor: Colors.white,
                                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-                                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                                    padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
                                   ),
-                                  child: const Text('Open', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 11)),
+                                  child: const Text('Open', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12)),
                                 ),
                               ],
                             ),
@@ -364,14 +364,14 @@ class _AIChatbotScreenState extends State<AIChatbotScreen> {
                         ),
                       ],
 
-                      // Quick Reply Chips
+                      // Quick Action Chips
                       if (quickReplies != null && quickReplies.isNotEmpty) ...[
-                        const SizedBox(height: 8),
+                        const SizedBox(height: 10),
                         Padding(
-                          padding: const EdgeInsets.only(left: 36),
+                          padding: const EdgeInsets.only(left: 40),
                           child: Wrap(
                             spacing: 8,
-                            runSpacing: 6,
+                            runSpacing: 8,
                             children: quickReplies.map((reply) {
                               return ActionChip(
                                 label: Text(
@@ -382,10 +382,10 @@ class _AIChatbotScreenState extends State<AIChatbotScreen> {
                                     fontSize: 11,
                                   ),
                                 ),
-                                backgroundColor: theme.colorScheme.primary.withValues(alpha: 0.1),
+                                backgroundColor: theme.colorScheme.primary.withValues(alpha: 0.08),
                                 shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(16),
-                                  side: BorderSide(color: theme.colorScheme.primary.withValues(alpha: 0.3)),
+                                  borderRadius: BorderRadius.circular(20),
+                                  side: BorderSide(color: theme.colorScheme.primary.withValues(alpha: 0.25)),
                                 ),
                                 onPressed: () => _handleSendMessage(reply.toString()),
                               );
@@ -415,16 +415,17 @@ class _AIChatbotScreenState extends State<AIChatbotScreen> {
               ),
             ),
 
-          // Input Text Box
+          // Handcrafted Dock Input Field
           Container(
-            padding: const EdgeInsets.all(12),
+            padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
-              color: theme.cardTheme.color ?? theme.colorScheme.surface,
+              color: isDark ? const Color(0xFF1E293B) : Colors.white,
+              borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black.withValues(alpha: 0.05),
-                  blurRadius: 8,
-                  offset: const Offset(0, -3),
+                  color: Colors.black.withValues(alpha: 0.06),
+                  blurRadius: 10,
+                  offset: const Offset(0, -4),
                 ),
               ],
             ),
@@ -434,20 +435,21 @@ class _AIChatbotScreenState extends State<AIChatbotScreen> {
                   child: TextField(
                     controller: _textController,
                     decoration: InputDecoration(
-                      hintText: 'Ask Chat Board about products, deals, order...',
-                      contentPadding: const EdgeInsets.symmetric(horizontal: 18, vertical: 12),
+                      hintText: 'Ask Chat Board about orders, sarees, deals...',
+                      contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
                       border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(24),
+                        borderRadius: BorderRadius.circular(28),
                         borderSide: BorderSide.none,
                       ),
                       filled: true,
+                      fillColor: isDark ? const Color(0xFF0F172A) : const Color(0xFFF1F5F9),
                     ),
                     onSubmitted: (_) => _handleSendMessage(),
                   ),
                 ),
-                const SizedBox(width: 8),
+                const SizedBox(width: 10),
                 CircleAvatar(
-                  radius: 22,
+                  radius: 24,
                   backgroundColor: theme.colorScheme.primary,
                   child: IconButton(
                     icon: const Icon(Icons.send_rounded, color: Colors.white, size: 20),
