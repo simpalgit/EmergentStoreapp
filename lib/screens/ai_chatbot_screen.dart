@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import '../models/product.dart';
 import 'track_order_screen.dart';
 import 'coupons_rewards_screen.dart';
+import 'wallet_screen.dart';
+import 'saved_addresses_screen.dart';
 
 class AIChatbotScreen extends StatefulWidget {
   final Function(Product p)? onProductTap;
@@ -25,20 +27,28 @@ class _AIChatbotScreenState extends State<AIChatbotScreen> {
   bool _isTyping = false;
   bool _isPythonServerOnline = false;
 
-  final List<Map<String, dynamic>> _messages = [
-    {
-      'isUser': false,
-      'text': 'Welcome to EmergentStore Boutique Concierge! 🛍️✨ How may I assist you with orders, styling, or festive discounts today?',
-      'time': 'Just now',
-      'quickReplies': ['Track Live Order', 'Festive Sarees 50% OFF', 'Flash Sale Deals', 'Claim Free Coupons'],
-      'recommendation': null,
-    },
-  ];
+  String _userEmail = 'simpal@gmail.com';
+  String _userName = 'Simpal';
+
+  late List<Map<String, dynamic>> _messages;
 
   @override
   void initState() {
     super.initState();
+    _initializeInitialMessage();
     _checkPythonServerHealth();
+  }
+
+  void _initializeInitialMessage() {
+    _messages = [
+      {
+        'isUser': false,
+        'text': 'Hello $_userName! 👋 Welcome to EmergentStore Chat Board. Your Gmail ($_userEmail) is connected. Ask me anything for clear, exact account details!',
+        'time': 'Just now',
+        'quickReplies': ['Track Order', 'Send Invoice to Gmail 📄', 'My Wallet Balance 💳', 'Festive Sale 50% OFF'],
+        'recommendation': null,
+      },
+    ];
   }
 
   // Check if Chatbot HTTP Server is online using dart:io HttpClient
@@ -57,6 +67,115 @@ class _AIChatbotScreenState extends State<AIChatbotScreen> {
         _isPythonServerOnline = false;
       });
     }
+  }
+
+  void _showChangeGmailModal() {
+    final emailController = TextEditingController(text: _userEmail);
+    final nameController = TextEditingController(text: _userName);
+
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+      ),
+      builder: (context) {
+        return Padding(
+          padding: EdgeInsets.only(
+            top: 20,
+            left: 20,
+            right: 20,
+            bottom: MediaQuery.of(context).viewInsets.bottom + 20,
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const Row(
+                    children: [
+                      Icon(Icons.mail_outline_rounded, color: Colors.redAccent, size: 24),
+                      SizedBox(width: 8),
+                      Text(
+                        'Connect Gmail Account',
+                        style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                      ),
+                    ],
+                  ),
+                  IconButton(
+                    icon: const Icon(Icons.close),
+                    onPressed: () => Navigator.pop(context),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 12),
+              const Text(
+                'Connecting your Gmail enables instant, exact answers for order tracking, tax invoices, wallet balance & personalized recommendations.',
+                style: TextStyle(color: Colors.grey, fontSize: 13),
+              ),
+              const SizedBox(height: 16),
+              TextField(
+                controller: nameController,
+                decoration: InputDecoration(
+                  labelText: 'Your Name',
+                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+                  prefixIcon: const Icon(Icons.person_outline),
+                ),
+              ),
+              const SizedBox(height: 12),
+              TextField(
+                controller: emailController,
+                keyboardType: TextInputType.emailAddress,
+                decoration: InputDecoration(
+                  labelText: 'Gmail Address',
+                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+                  prefixIcon: const Icon(Icons.email_outlined),
+                ),
+              ),
+              const SizedBox(height: 20),
+              SizedBox(
+                width: double.infinity,
+                child: ElevatedButton.icon(
+                  onPressed: () {
+                    final newEmail = emailController.text.trim();
+                    final newName = nameController.text.trim();
+                    if (newEmail.isEmpty) return;
+
+                    setState(() {
+                      _userEmail = newEmail;
+                      _userName = newName.isNotEmpty ? newName : 'Simpal';
+                      _messages.add({
+                        'isUser': false,
+                        'text': '🎉 Gmail connected: $_userEmail. I am now synced with your account for exact answers!',
+                        'time': 'Just now',
+                        'quickReplies': ['Track Order', 'Send Invoice to Gmail 📄', 'My Wallet Balance 💳'],
+                        'recommendation': null,
+                      });
+                    });
+
+                    Navigator.pop(context);
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text('Connected to Gmail: $_userEmail')),
+                    );
+                    _scrollToBottom();
+                  },
+                  icon: const Icon(Icons.check_circle_outline, color: Colors.white),
+                  label: const Text('Connect & Save Gmail', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Theme.of(context).colorScheme.primary,
+                    foregroundColor: Colors.white,
+                    padding: const EdgeInsets.symmetric(vertical: 14),
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
   }
 
   void _scrollToBottom() {
@@ -90,14 +209,18 @@ class _AIChatbotScreenState extends State<AIChatbotScreen> {
 
     _scrollToBottom();
 
-    // Call Server API or Local Assistant Engine Fallback
+    // Call Python Server API or Local Assistant Engine Fallback
     Map<String, dynamic> botReply;
 
     try {
       final client = HttpClient()..connectionTimeout = const Duration(seconds: 3);
       final request = await client.postUrl(Uri.parse('http://10.0.2.2:5000/api/chat'));
       request.headers.set('Content-Type', 'application/json');
-      request.write(jsonEncode({'message': query}));
+      request.write(jsonEncode({
+        'message': query,
+        'email': _userEmail,
+        'name': _userName,
+      }));
       final response = await request.close();
 
       if (response.statusCode == 200) {
@@ -128,26 +251,62 @@ class _AIChatbotScreenState extends State<AIChatbotScreen> {
     _scrollToBottom();
   }
 
-  // Smart Handcrafted Local Response Engine
+  // Smart Handcrafted Local Response Engine (Gmail Account Aware)
   Map<String, dynamic> _generateLocalFallbackResponse(String query) {
     final msg = query.toLowerCase();
 
     if (msg.contains('order') || msg.contains('track') || msg.contains('delivery')) {
       return {
         'isUser': false,
-        'text': '🚚 Great news! Your order #EMG-89241 is Out for Delivery today by 6:00 PM with partner Rajesh Kumar.',
+        'text': '🚚 Hello $_userName! For your account ($_userEmail), order #EMG-89241 (Designer Cotton Anarkali Kurti Set) is Out for Delivery today by 6:00 PM with partner Rajesh Kumar. Live alerts enabled for $_userEmail!',
         'time': 'Just now',
-        'quickReplies': ['Track Live Map', 'Call Delivery Partner'],
+        'quickReplies': ['Track Live Map', 'Send Invoice to Gmail 📄', 'Contact Delivery Agent'],
         'recommendation': {
-          'title': 'Order #EMG-89241 • 2 Items',
-          'subtitle': 'Arriving Today by 6 PM',
+          'title': 'Order #EMG-89241 • Arriving Today',
+          'subtitle': 'Linked to $_userEmail',
           'action': 'TRACK_ORDER',
+        },
+      };
+    } else if (msg.contains('invoice') || msg.contains('receipt') || msg.contains('bill') || msg.contains('gmail')) {
+      return {
+        'isUser': false,
+        'text': '📄 Clear Tax Invoice for order #EMG-89241 has been generated and emailed directly to $_userEmail!',
+        'time': 'Just now',
+        'quickReplies': ['View My Orders', 'My Wallet Balance 💳'],
+        'recommendation': {
+          'title': 'Invoice Sent to $_userEmail',
+          'subtitle': 'Order #EMG-89241 • Tax Invoice PDF',
+          'action': 'TRACK_ORDER',
+        },
+      };
+    } else if (msg.contains('wallet') || msg.contains('balance') || msg.contains('money')) {
+      return {
+        'isUser': false,
+        'text': '💳 Hello $_userName! Account details for $_userEmail:\n• Wallet Balance: ₹1,250.00\n• Reward Coins: 1,450 Coins\n• Default Address: House #402, Green Park, New Delhi',
+        'time': 'Just now',
+        'quickReplies': ['Add Money to Wallet', 'Saved Addresses 📍'],
+        'recommendation': {
+          'title': 'Wallet Balance: ₹1,250.00',
+          'subtitle': 'Linked to $_userEmail',
+          'action': 'WALLET',
+        },
+      };
+    } else if (msg.contains('address') || msg.contains('location')) {
+      return {
+        'isUser': false,
+        'text': '📍 Saved Delivery Address for $_userEmail:\n$_userName, House #402, Green Park Avenue, Sector 14, New Delhi - 110001.',
+        'time': 'Just now',
+        'quickReplies': ['Manage Addresses', 'Track Order'],
+        'recommendation': {
+          'title': 'Delivery Address • New Delhi',
+          'subtitle': 'Default for $_userEmail',
+          'action': 'ADDRESS',
         },
       };
     } else if (msg.contains('saree') || msg.contains('ethnic') || msg.contains('kurti')) {
       return {
         'isUser': false,
-        'text': '✨ Here is our top recommended Silk Blend Banarasi Designer Saree with flat 56% OFF!',
+        'text': '✨ Hi $_userName! Based on your Gmail shopping preferences ($_userEmail), here is our top recommended Silk Blend Banarasi Designer Saree with flat 56% OFF!',
         'time': 'Just now',
         'quickReplies': ['View Sarees', 'Apply FESTIVE50 Code'],
         'recommendation': {
@@ -159,21 +318,21 @@ class _AIChatbotScreenState extends State<AIChatbotScreen> {
     } else if (msg.contains('coupon') || msg.contains('discount') || msg.contains('offer')) {
       return {
         'isUser': false,
-        'text': '🎁 Use promo code FESTIVE50 at checkout for Flat 50% OFF + 200 Bonus Coins!',
+        'text': '🎁 Exclusive coupon code FESTIVE50 is active for $_userEmail. Apply at checkout for Flat 50% OFF + 200 Bonus Coins!',
         'time': 'Just now',
         'quickReplies': ['Copy Code FESTIVE50', 'Scratch & Win'],
         'recommendation': {
           'title': 'FESTIVE50 Promo Coupon',
-          'subtitle': 'Flat 50% Instant Discount',
+          'subtitle': 'Flat 50% OFF for $_userEmail',
           'action': 'COPY_COUPON',
         },
       };
     } else {
       return {
         'isUser': false,
-        'text': 'I am your Emergent Shopping Concierge 💬. How can I help you find products or check delivery updates?',
+        'text': 'Hello $_userName! I am your Gmail-connected Chat Board Assistant 💬 ($_userEmail). Ask me about order status, tax invoice, wallet balance, or sarees for exact, clear answers!',
         'time': 'Just now',
-        'quickReplies': ['Track Order', 'Festive Sale 50% OFF', 'Flash Sale Deals', 'Wallet & Coins'],
+        'quickReplies': ['Track Order', 'Send Invoice to Gmail 📄', 'My Wallet Balance 💳', 'Saved Addresses 📍'],
         'recommendation': null,
       };
     }
@@ -192,37 +351,98 @@ class _AIChatbotScreenState extends State<AIChatbotScreen> {
             CircleAvatar(
               radius: 18,
               backgroundColor: theme.colorScheme.primary.withValues(alpha: 0.15),
-              child: Icon(Icons.support_agent_rounded, color: theme.colorScheme.primary, size: 20),
+              child: Icon(Icons.chat_bubble_rounded, color: theme.colorScheme.primary, size: 20),
             ),
             const SizedBox(width: 10),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Text(
-                  'Emergent Chat Board',
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                ),
-                Row(
-                  children: [
-                    const Icon(Icons.circle, size: 8, color: Colors.green),
-                    const SizedBox(width: 4),
-                    Text(
-                      _isPythonServerOnline ? 'Python Server Online 🐍' : 'Live Concierge 💬',
-                      style: TextStyle(
-                        fontSize: 10,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.green.shade800,
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    'Emergent Chat Board',
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                  ),
+                  Row(
+                    children: [
+                      const Icon(Icons.circle, size: 8, color: Colors.green),
+                      const SizedBox(width: 4),
+                      Text(
+                        _isPythonServerOnline ? 'Python Server Online 🐍' : 'Live Concierge 💬',
+                        style: TextStyle(
+                          fontSize: 10,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.green.shade800,
+                        ),
                       ),
-                    ),
-                  ],
-                ),
-              ],
+                    ],
+                  ),
+                ],
+              ),
             ),
           ],
         ),
       ),
       body: Column(
         children: [
+          // Gmail Account Connection Banner
+          InkWell(
+            onTap: _showChangeGmailModal,
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+              decoration: BoxDecoration(
+                color: theme.colorScheme.primary.withValues(alpha: 0.1),
+                border: Border(bottom: BorderSide(color: theme.colorScheme.primary.withValues(alpha: 0.2))),
+              ),
+              child: Row(
+                children: [
+                  const Icon(Icons.mark_email_read_rounded, color: Colors.redAccent, size: 18),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          children: [
+                            const Text(
+                              'GMAIL CONNECTED',
+                              style: TextStyle(
+                                fontSize: 9,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.redAccent,
+                                letterSpacing: 0.5,
+                              ),
+                            ),
+                            const SizedBox(width: 4),
+                            Icon(Icons.check_circle_rounded, color: Colors.green.shade700, size: 12),
+                          ],
+                        ),
+                        Text(
+                          '$_userName • $_userEmail',
+                          style: TextStyle(
+                            fontSize: 12,
+                            fontWeight: FontWeight.bold,
+                            color: isDark ? Colors.white : const Color(0xFF1E293B),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                    decoration: BoxDecoration(
+                      color: theme.colorScheme.primary,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: const Text(
+                      'Change',
+                      style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 10),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+
           // Messages List
           Expanded(
             child: ListView.builder(
@@ -249,7 +469,7 @@ class _AIChatbotScreenState extends State<AIChatbotScreen> {
                             CircleAvatar(
                               radius: 16,
                               backgroundColor: theme.colorScheme.primary.withValues(alpha: 0.12),
-                              child: Icon(Icons.support_agent_rounded, color: theme.colorScheme.primary, size: 18),
+                              child: Icon(Icons.chat_bubble_rounded, color: theme.colorScheme.primary, size: 18),
                             ),
                             const SizedBox(width: 8),
                           ],
@@ -343,6 +563,16 @@ class _AIChatbotScreenState extends State<AIChatbotScreen> {
                                       Navigator.push(
                                         context,
                                         MaterialPageRoute(builder: (context) => const CouponsRewardsScreen()),
+                                      );
+                                    } else if (action == 'WALLET') {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(builder: (context) => const WalletScreen()),
+                                      );
+                                    } else if (action == 'ADDRESS') {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(builder: (context) => const SavedAddressesScreen()),
                                       );
                                     } else {
                                       if (widget.onProductTap != null) {
